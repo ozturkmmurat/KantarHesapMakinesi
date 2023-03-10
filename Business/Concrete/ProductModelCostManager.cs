@@ -11,6 +11,9 @@ using Entities.Dtos;
 using Business.Utilities.CostsCurrencyCalculation;
 using Core.Aspects.Autofac.Transaction;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.ProductModelCost;
 
 namespace Business.Concrete
 {
@@ -46,11 +49,16 @@ namespace Business.Concrete
         [SecuredOperation("admin")]
         public IResult Add(ProductModelCost productModelCost)
         {
-            _productModelCostDal.Add(productModelCost);
-            return new SuccessResult();
+            if(productModelCost != null)
+            {
+                _productModelCostDal.Add(productModelCost);
+                return new SuccessResult(Messages.DataAdded);
+            }
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         [TransactionScopeAspect]
+        [ValidationAspect(typeof(ProductModelCostDtoValidator))]
         public IResult AddProductModelCost(ProductModelCostDto productModelCostDto)
         {
             if (productModelCostDto != null && GetById(productModelCostDto.ModelId).Success == false  )
@@ -135,9 +143,9 @@ namespace Business.Concrete
             if (productModelCost != null)
             {
                 _productModelCostDal.Delete(productModelCost);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<ProductModelCost>> GetAllProductModelCost()
@@ -169,6 +177,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<ProductModelCostDto>();
         }
+        
 
         public IDataResult<ProductModelCost> MappingProductModelCost(ProductModelCostDto productModelCostDto)
         {
@@ -226,12 +235,13 @@ namespace Business.Concrete
             if (productModelCost != null)
             {
                 _productModelCostDal.Update(productModelCost);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
         [TransactionScopeAspect]
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ProductModelCostDtoValidator))]
         public IResult UpdateProductModelCost(ProductModelCostDto productModelCostDto)
         {
             if (productModelCostDto != null)

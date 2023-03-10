@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
+using Business.ValidationRules.FluentValidation.AccessoryPackage;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -18,14 +21,15 @@ namespace Business.Concrete
             _accessoryPackageDal = accessoryPackageDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryPackageValidator))]
         public IResult Add(AccessoryPackage accessoryPackage)
         {
             if (accessoryPackage != null)
             {
                 _accessoryPackageDal.Add(accessoryPackage);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         public IResult Delete(AccessoryPackage accessoryPackage)
@@ -33,15 +37,15 @@ namespace Business.Concrete
             if (accessoryPackage != null)
             {
                 _accessoryPackageDal.Delete(accessoryPackage);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<AccessoryPackage>> GetAllAccessoryPackage()
         {
             var result = _accessoryPackageDal.GetAll();
-            if (result.Count != null )
+            if (result != null )
             {
                 return new SuccessDataResult<List<AccessoryPackage>>(result);
             }
@@ -58,14 +62,15 @@ namespace Business.Concrete
             return new ErrorDataResult<AccessoryPackage>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryPackageValidator))]
         public IResult Update(AccessoryPackage accessoryPackage)
         {
             if (accessoryPackage != null)
             {
                 _accessoryPackageDal.Update(accessoryPackage);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

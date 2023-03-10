@@ -9,6 +9,7 @@ using System.Text;
 using System.Linq;
 using Entities.Dtos;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
 
 namespace Business.Concrete
 {
@@ -44,9 +45,9 @@ namespace Business.Concrete
                     ProductionTime = result.ModelProductionTime,
                 };
                 _modelDal.Add(model);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
 
         [SecuredOperation("admin")]
@@ -55,9 +56,9 @@ namespace Business.Concrete
             if (model != null)
             {
                 _modelDal.Delete(model);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<Model>> GetAllModel()
@@ -157,9 +158,9 @@ namespace Business.Concrete
                     ProductionTime = result.ModelProductionTime,
                 };
                 _modelDal.Update(model);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Business.Abstract;
+using Business.Abstract.User;
 using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.ValidationRules.FluentValidation;
+using Business.ValidationRules.FluentValidation.User;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Entities.Dtos;
@@ -19,42 +22,44 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         IUserDal _userDal;
-        public UserManager(IUserDal userDal)
+        IUserOperationClaimService _userOperationClaimService;
+        public UserManager(IUserDal userDal, IUserOperationClaimService userOperationClaimService)
         {
             _userDal = userDal;
+            _userOperationClaimService = userOperationClaimService;
         }
         [ValidationAspect(typeof(UserValidator))]
-        [SecuredOperation("user")]
-        public IResult Add(User user)
+        public IResult Add(Core.Entities.Concrete.User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.DataAdded);
         }
-        [SecuredOperation("user")]
-        public IResult Delete(User user)
+        [SecuredOperation("user,admin")]
+        public IResult Delete(Core.Entities.Concrete.User user)
         {
             _userDal.Delete(user);
             return new SuccessResult(Messages.DataDeleted);
         }
-        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        public IDataResult<List<OperationClaim>> GetClaims(Core.Entities.Concrete.User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
-        public IDataResult<List<User>> GetAllUser()
+        public IDataResult<List<Core.Entities.Concrete.User>> GetAllUser()
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.GetByAll);
+            return new SuccessDataResult<List<Core.Entities.Concrete.User>>(_userDal.GetAll(), Messages.GetByAll);
         }
 
-        public IDataResult<User> GetById(int id)
+        public IDataResult<Core.Entities.Concrete.User> GetById(int id)
         {
             var result = _userDal.Get(u => u.Id == id);
             if (result != null)
             {
-                return new SuccessDataResult<User>(result, Messages.GetByIdMessage);
+                return new SuccessDataResult<Core.Entities.Concrete.User>(result, Messages.GetByIdMessage);
             }
-            return new ErrorDataResult<User>(Messages.GetByAllDefault);
+            return new ErrorDataResult<Core.Entities.Concrete.User>(Messages.GetByAllDefault);
         }
-        [SecuredOperation("user")]
+        [SecuredOperation("user,admin")]
+        [ValidationAspect(typeof(UserUpdateDtoValidator))]
         public IResult Update(UserForUpdateDto userForUpdateDto)
         {
             byte[] passwordHash, passwordSalt;
@@ -70,7 +75,7 @@ namespace Business.Concrete
             {
                 if (userForUpdateDto.OldPassword == null)
                 {
-                    return new ErrorResult("Şifrenizi yenilemek içni eski şifreyi de girmelisiniz");
+                    return new ErrorResult();
                 }
                 var result = CheckPassword(userForUpdateDto.Email, userForUpdateDto.OldPassword);
                 if (result.Success != true)
@@ -78,7 +83,7 @@ namespace Business.Concrete
                     return new ErrorResult("Eski şifreniz hatalı");
                 }
                 HashingHelper.CreatePasswordHash(userForUpdateDto.NewPassword, out passwordHash, out passwordSalt);
-                var user = new User
+                var user = new Core.Entities.Concrete.User
                 {
                     Id = userForUpdateDto.UserId,
                     Email = userForUpdateDto.Email,
@@ -94,7 +99,7 @@ namespace Business.Concrete
             {
 
                 var result = GetById(userForUpdateDto.UserId);
-                var user = new User
+                var user = new Core.Entities.Concrete.User
                 {
                     Id = userForUpdateDto.UserId,
                     Email = userForUpdateDto.Email,
@@ -102,7 +107,9 @@ namespace Business.Concrete
                     LastName = userForUpdateDto.LastName,
                     PasswordHash = result.Data.PasswordHash,
                     PasswordSalt = result.Data.PasswordSalt,
-                    Status = true
+                    RefreshToken = result.Data.RefreshToken,
+                    RefreshTokenEndDate = result.Data.RefreshTokenEndDate,
+                    Status = result.Data.Status
                 };
                 _userDal.Update(user);
             }
@@ -111,7 +118,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.DataUpdate);
         }
 
-        public User GetByMail(string email)
+        public Core.Entities.Concrete.User GetByMail(string email)
         {
             var result = _userDal.Get(u => u.Email == email);
             if (result != null)
@@ -121,10 +128,10 @@ namespace Business.Concrete
             return null;
         }
 
-        public IDataResult<User> GetWhereMailById(int id)
+        public IDataResult<Core.Entities.Concrete.User> GetWhereMailById(int id)
         {
             var result = _userDal.Get(u => u.Id == id);
-            return new SuccessDataResult<User>(result);
+            return new SuccessDataResult<Core.Entities.Concrete.User>(result);
         }
 
         public IResult CheckPassword(string email, string password)
@@ -134,7 +141,7 @@ namespace Business.Concrete
             {
                 if (!HashingHelper.VerifyPasswordHash(password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
                 {
-                    return new ErrorDataResult<User>();
+                    return new ErrorDataResult<Core.Entities.Concrete.User>();
                 }
             }
             return new SuccessResult();
@@ -145,7 +152,7 @@ namespace Business.Concrete
             var userToCheck = GetByMail(email);
             if (userToCheck == null)
             {
-                return new ErrorDataResult<User>();
+                return new ErrorDataResult<Core.Entities.Concrete.User>();
             }
             return new SuccessResult();
         }
@@ -163,14 +170,52 @@ namespace Business.Concrete
             return new ErrorResult();
         }
 
-        public IDataResult<User> GetByRefreshToken(string refreshToken)
+        public IDataResult<Core.Entities.Concrete.User> GetByRefreshToken(string refreshToken)
         {
             var result = _userDal.Get(u => u.RefreshToken == refreshToken);
             if (result != null)
             {
-                return new SuccessDataResult<User>(result);
+                return new SuccessDataResult<Core.Entities.Concrete.User>(result);
             }
-            return new ErrorDataResult<User>();
+            return new ErrorDataResult<Core.Entities.Concrete.User>();
+        }
+        [SecuredOperation("admin")]
+        public IDataResult<List<UserDto>> GetAllUserDto()
+        {
+            var result = _userDal.GetAllUserDto();
+            if (result != null)
+            {
+                return new SuccessDataResult<List<UserDto>>(result);
+            }
+            return new ErrorDataResult<List<UserDto>>();
+        }
+        [TransactionScopeAspect]
+        [SecuredOperation("admin")]
+        public IResult UpdateUser(UserDto userDto)
+        {
+            if (userDto != null)
+            {
+                UserForUpdateDto user = new UserForUpdateDto
+                {
+                    UserId = userDto.UserId,
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
+                    Email = userDto.Email,
+                    Status = userDto.Status,
+                    
+                };
+                Update(user);
+
+                UserOperationClaim userOperationClaim = new UserOperationClaim()
+                {
+                    Id = userDto.UserOperationClaimId,
+                    OperationClaimId = userDto.OperationClaimId,
+                    UserId = userDto.UserId
+                };
+                _userOperationClaimService.Update(userOperationClaim);
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

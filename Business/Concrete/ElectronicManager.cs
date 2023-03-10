@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
+using Business.ValidationRules.Electronic;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -19,15 +22,16 @@ namespace Business.Concrete
             _electronicDal = electronicDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ElectronicValidator))]
         public IResult Add(Electronic electronic)
         {
             if (electronic != null)
             {
                 electronic.ElectronicTlPrice = TCMBCalculation.EuroCalculation(electronic.ElectronicEuroPrice);
                 _electronicDal.Add(electronic);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         public IResult Delete(Electronic electronic)
@@ -35,9 +39,9 @@ namespace Business.Concrete
             if (electronic != null)
             {
                 _electronicDal.Delete(electronic);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<Electronic>> GetAllElectronic()
@@ -60,15 +64,16 @@ namespace Business.Concrete
             return new ErrorDataResult<Electronic>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ElectronicValidator))]
         public IResult Update(Electronic electronic)
         {
             if (electronic != null)
             {
                 electronic.ElectronicTlPrice = TCMBCalculation.EuroCalculation(electronic.ElectronicEuroPrice);
                 _electronicDal.Update(electronic);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

@@ -21,8 +21,8 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetAllUsers")]
-        public IActionResult GetAllCustomer()
+        [HttpGet("GetAllUser")]
+        public IActionResult GetAll()
         {
             var result = _userService.GetAllUser();
 
@@ -32,6 +32,19 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("GetAllUserDto")]
+        public IActionResult GetAllUserDto()
+        {
+            var result = _userService.GetAllUserDto();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("GetById")]
         public IActionResult GetById(int id)
         {
@@ -65,6 +78,19 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpPost("UpdateUser")]
+        public IActionResult UpdateUser(UserDto userDto)
+        {
+            var result = _userService.UpdateUser(userDto);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("Delete")]
         public IActionResult Delete(User user)
         {

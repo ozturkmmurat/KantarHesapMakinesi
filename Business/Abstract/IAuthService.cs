@@ -10,9 +10,10 @@ namespace Business.Abstract
 {
     public interface IAuthService
     {
-        IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password);
-        IDataResult<User> Login(UserForLoginDto userForLoginDto);
+        IDataResult<Core.Entities.Concrete.User> Register(UserForRegisterDto userForRegisterDto, string password);
+        IDataResult<Core.Entities.Concrete.User> Login(UserForLoginDto userForLoginDto);
         IResult UserExists(string email);
-        IDataResult<AccessToken> CreateAccessToken(User user);
+        IResult CheckStatus(string email);
+        IDataResult<AccessToken> CreateAccessToken(Core.Entities.Concrete.User user);
     }
 }

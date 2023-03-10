@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
+using Business.ValidationRules.FluentValidation.AccessoryPackage;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -19,14 +22,15 @@ namespace Business.Concrete
             _accessoryPackageDetailDal = accessoryPackageDetailDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryPackageDetailValidator))]
         public IResult Add(AccessoryPackageDetail accessoryPackageDetail)
         {
             if (accessoryPackageDetail != null)
             {
                 _accessoryPackageDetailDal.Add(accessoryPackageDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         public IResult Delete(AccessoryPackageDetail accessoryPackageDetail)
@@ -34,9 +38,9 @@ namespace Business.Concrete
             if (accessoryPackageDetail != null)
             {
                 _accessoryPackageDetailDal.Delete(accessoryPackageDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<AccessoryPackageDetail>> GetAllAccessoryPackage()
@@ -89,14 +93,15 @@ namespace Business.Concrete
             return new ErrorDataResult<AccessoryPackageDetail>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryPackageDetailValidator))]
         public IResult Update(AccessoryPackageDetail accessoryPackageDetail)
         {
             if (accessoryPackageDetail != null)
             {
                 _accessoryPackageDetailDal.Update(accessoryPackageDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

@@ -59,6 +59,7 @@ namespace Business.BusinessAspects.Autofac
                 }
             }
             throw new SecuredOperationException(UserMessages.AuthorizationDenied); // Eğer ki claimi yok ise hata ver 
+                                                                                   // Claim nedir ? Claim kullanıcının yetkisini belirtir veritabanında gördüğün gibi admin kullanıcı diye yetkiler var 
         }
     }
 }

@@ -9,10 +9,6 @@ namespace Entities.Dtos
     {
         //Product propertyleri
         public int ProductId { get; set; }
-        public int CategoryId { get; set; }
         public string ProductName { get; set; }
-
-        //Category Propertyleri
-        public string CategoryName { get; set; }
     }
 }

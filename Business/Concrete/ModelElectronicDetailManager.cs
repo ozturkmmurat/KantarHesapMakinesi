@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
+using Business.ValidationRules.Model;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -19,14 +22,15 @@ namespace Business.Concrete
             _modelElectronicDetailDal = modelElectronicDetailDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ModelElectronicDetailValidator))]
         public IResult Add(ModelElectronicDetail modelElectronicDetail)
         {
             if (modelElectronicDetail != null)
             {
                 _modelElectronicDetailDal.Add(modelElectronicDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         public IResult Delete(ModelElectronicDetail modelElectronicDetail)
@@ -34,9 +38,9 @@ namespace Business.Concrete
             if (modelElectronicDetail != null)
             {
                 _modelElectronicDetailDal.Delete(modelElectronicDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<ModelElectronicDetail>> GetAllModelElectronicDetail()
@@ -79,14 +83,15 @@ namespace Business.Concrete
             return new ErrorDataResult<ModelElectronicDetailDto>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ModelElectronicDetailValidator))]
         public IResult Update(ModelElectronicDetail modelElectronicDetail)
         {
             if (modelElectronicDetail != null)
             {
                 _modelElectronicDetailDal.Update(modelElectronicDetail);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

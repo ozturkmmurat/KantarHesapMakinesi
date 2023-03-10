@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
+using Business.ValidationRules.InstallationCost;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -20,15 +23,16 @@ namespace Business.Concrete
             _installationCostDal = installationCostDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(InstallationCostValidator))]
         public IResult Add(InstallationCost installationCost)
         {
             if (installationCost != null)
             {
                 installationCost.InstallationTlPrice = TCMBCalculation.EuroCalculation(installationCost.InstallationEuroPrice);
                 _installationCostDal.Add(installationCost);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
 
@@ -37,9 +41,9 @@ namespace Business.Concrete
             if (installationCost != null)
             {
                 _installationCostDal.Delete(installationCost);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<InstallationCost>> GetAllInstallationCost()
@@ -82,15 +86,16 @@ namespace Business.Concrete
             return new ErrorDataResult<InstallationCostDto>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(InstallationCostValidator))]
         public IResult Update(InstallationCost installationCost)
         {
             if (installationCost != null)
             {
                 installationCost.InstallationTlPrice = TCMBCalculation.EuroCalculation(installationCost.InstallationEuroPrice);
                 _installationCostDal.Update(installationCost);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

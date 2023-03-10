@@ -21,22 +21,18 @@ namespace DataAccess.Context
         public DbSet<Accessory> Accessories { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Electronic> Electronics { get; set; }
-        public DbSet<Material> Materials { get; set; }
         public DbSet<Model> Models { get; set; }
-        public DbSet<ModelMaterialDetail> ModelMaterialDetails { get; set; }
         public DbSet<ModelElectronicDetail> ModelElectronicDetails { get; set; }
         public DbSet<ModelAccessoryDetail> ModelAccessoryDetails { get; set; }
         public DbSet<AccessoryPackageDetail> AccessoryPackageDetails { get; set; }
         public DbSet<AccessoryPackage> AccessoryPackages { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductModelCost> ProductModelCosts { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<CostVariable> CostVariables { get; set; }
         public DbSet<ProductModelCostDetail> ProductModelCostDetails { get; set; }
         public DbSet<InstallationCost> InstallationCosts { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Variant> Variants { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }

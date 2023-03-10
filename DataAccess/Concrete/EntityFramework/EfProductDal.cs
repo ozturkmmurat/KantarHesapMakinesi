@@ -18,14 +18,10 @@ namespace DataAccess.Concrete.EntityFramework
             using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
             {
                 var result = from p in context.Products
-                             join c in context.Categories
-                             on p.CategoryId equals c.Id
                              select new ProductDto
                              {
                                  ProductId = p.Id,
-                                 CategoryId = c.Id,
                                  ProductName = p.ProductName,
-                                 CategoryName = c.CategoryName
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constans;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -21,9 +22,9 @@ namespace Business.Concrete
             if (category != null)
             {
                 _categoryDal.Add(category);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
 
         public IResult Delete(Category category)
@@ -31,9 +32,9 @@ namespace Business.Concrete
             if (category != null)
             {
                 _categoryDal.Delete(category);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<Category>> GetAllCategory()
@@ -61,9 +62,9 @@ namespace Business.Concrete
             if (category != null)
             {
                 _categoryDal.Update(category);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

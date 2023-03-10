@@ -6,11 +6,42 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Entities.Dtos.User;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<User, KantarHesapMakinesiContext>, IUserDal
     {
+        public List<UserDto> GetAllUserDto(Expression<Func<UserDto, bool>> filter = null)
+        {
+            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
+            {
+                var result = from u in context.Users
+                             join uop in context.UserOperationClaims
+                             on u.Id equals uop.UserId
+                             into userOperationClaimTemp
+                             from uopt in userOperationClaimTemp.DefaultIfEmpty()
+                             join op in context.OperationClaims
+                             on uopt.OperationClaimId equals op.Id
+                              into operationClaimTemp
+                             from opct in operationClaimTemp.DefaultIfEmpty()
+
+                             select new UserDto
+                             {
+                                 UserOperationClaimId = uopt.Id,
+                                 OperationClaimId = opct.Id,
+                                 UserId = u.Id,
+                                 FirstName = u.FirstName,
+                                 LastName = u.LastName,
+                                 Email = u.Email,
+                                 Status = u.Status,
+                                 OperationClaimName = opct.Name
+                             };
+                return filter == null ? result.ToList() : result.Where(filter).ToList();
+            }
+        }
+
         public List<OperationClaim> GetClaims(User user)
         {
             using (var context = new KantarHesapMakinesiContext())

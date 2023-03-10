@@ -10,16 +10,18 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        IDataResult<List<OperationClaim>> GetClaims(User user);
-        IDataResult<List<User>> GetAllUser();
-        IDataResult<User> GetById(int id);
-        IDataResult<User> GetByRefreshToken(string refreshToken);
-        User GetByMail(string email);
+        IDataResult<List<OperationClaim>> GetClaims(Core.Entities.Concrete.User user);
+        IDataResult<List<Core.Entities.Concrete.User>> GetAllUser();
+        IDataResult<List<UserDto>> GetAllUserDto();
+        IDataResult<Core.Entities.Concrete.User> GetById(int id);
+        IDataResult<Core.Entities.Concrete.User> GetByRefreshToken(string refreshToken);
+        Core.Entities.Concrete.User GetByMail(string email);
         IResult UpdateRefreshToken(UserRefreshTokenDto userRefreshTokenDto);
         IResult CheckPassword(string email, string password);
         IResult CheckEmail(string email);
-        IResult Add(User user);
+        IResult Add(Core.Entities.Concrete.User user);
         IResult Update(UserForUpdateDto userForRegisterDto);
-        IResult Delete(User user);
+        IResult UpdateUser(UserDto userDto);
+        IResult Delete(Core.Entities.Concrete.User user);
     }
 }

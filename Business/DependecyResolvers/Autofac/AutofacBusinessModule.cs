@@ -2,7 +2,9 @@
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Abstract.ProductModelCostDetail;
+using Business.Abstract.User;
 using Business.Concrete;
+using Business.Concrete.User;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
@@ -29,14 +31,8 @@ namespace Business.DependecyResolvers.Autofac
             builder.RegisterType<EfElectronicDal>().As<IElectronicDal>().SingleInstance();
             builder.RegisterType<ElectronicManager>().As<IElectronicService>().SingleInstance();
 
-            builder.RegisterType<EfMaterialDal>().As<IMaterialDal>().SingleInstance();
-            builder.RegisterType<MaterialManager>().As<IMaterialService>().SingleInstance();
-
             builder.RegisterType<EfModelDal>().As<IModelDal>().SingleInstance();
             builder.RegisterType<ModelManager>().As<IModelService>().SingleInstance();
-
-            builder.RegisterType<EfModelMaterialDetailDal>().As<IModelMaterialDetailDal>().SingleInstance();
-            builder.RegisterType<ModelMaterialDetailManager>().As<IModelMaterialDetailService>().SingleInstance();
 
             builder.RegisterType<EfModelElectronicDetailDal>().As<IModelElectronicDetailDal>().SingleInstance();
             builder.RegisterType<ModelElectronicDetailManager>().As<IModelElectronicDetailService>().SingleInstance();
@@ -52,9 +48,6 @@ namespace Business.DependecyResolvers.Autofac
 
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
-
-            builder.RegisterType<EfProductDetailDal>().As<IProductDetailDal>().SingleInstance();
-            builder.RegisterType<ProductDetailManager>().As<IProductDetailService>().SingleInstance();
 
             builder.RegisterType<EfProductModelCostDal>().As<IProductModelCostDal>().SingleInstance();
             builder.RegisterType<ProductModelCostManager>().As<IProductModelCostService>().SingleInstance();
@@ -77,11 +70,14 @@ namespace Business.DependecyResolvers.Autofac
             builder.RegisterType<EfIInstallationCostDal>().As<IInstallationCostDal>().SingleInstance();
             builder.RegisterType<InstallationCostManager>().As<IInstallationCostService>().SingleInstance();
 
-            builder.RegisterType<EfVariantDal>().As<IVariantDal>().SingleInstance();
-            builder.RegisterType<VariantManager>().As<IVariantService>().SingleInstance();
-
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
+
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

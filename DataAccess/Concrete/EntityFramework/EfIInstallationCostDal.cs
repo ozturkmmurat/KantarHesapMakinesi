@@ -29,7 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  InstallationEuroPrice = ic.InstallationEuroPrice,
                                  CityName = l.CityName
                              };
-                return result.ToList();
+                return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
         }
 

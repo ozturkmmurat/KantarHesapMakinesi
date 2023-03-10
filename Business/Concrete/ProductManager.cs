@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -24,9 +25,9 @@ namespace Business.Concrete
             if (product != null)
             {
                 _productDal.Add(product);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
         [SecuredOperation("admin")]
         public IResult Delete(Product product)
@@ -34,9 +35,9 @@ namespace Business.Concrete
             if (product != null)
             {
                 _productDal.Delete(product);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<Product>> GetAllProduct()
@@ -74,9 +75,9 @@ namespace Business.Concrete
             if (product != null)
             {
                 _productDal.Update(product);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

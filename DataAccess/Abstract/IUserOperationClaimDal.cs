@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess;
 using Core.Entities.Concrete;
+using Entities.Dtos;
 using Entities.Dtos.User;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,7 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    public interface IUserDal : IEntityRepository<User>
+    public interface IUserOperationClaimDal : IEntityRepository<UserOperationClaim>
     {
-        List<OperationClaim> GetClaims(User user);
-        List<UserDto> GetAllUserDto(Expression<Func<UserDto, bool>> filter = null);
     }
 }

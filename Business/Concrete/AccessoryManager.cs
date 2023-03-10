@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
+using Business.ValidationRules.FluentValidation.Accessory;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -21,15 +24,16 @@ namespace Business.Concrete
             _accessoryDal = accessoryDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryValidator))]
         public IResult Add(Accessory accessory)
         {
             if (accessory != null)
             {
                 accessory.AccessoryTlPrice = TCMBCalculation.EuroCalculation(accessory.AccessoryEuroPrice);
                 _accessoryDal.Add(accessory);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
             
         }
         [SecuredOperation("admin")]
@@ -38,9 +42,9 @@ namespace Business.Concrete
             if (accessory != null)
             {
                 _accessoryDal.Delete(accessory);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
 
         public IDataResult<List<Accessory>> GetAllAccessory()
@@ -73,15 +77,16 @@ namespace Business.Concrete
             return new ErrorDataResult<Accessory>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(AccessoryValidator))]
         public IResult Update(Accessory accessory)
         {
             if(accessory != null)
             {
                 accessory.AccessoryTlPrice = TCMBCalculation.EuroCalculation(accessory.AccessoryEuroPrice);
                 _accessoryDal.Update(accessory);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

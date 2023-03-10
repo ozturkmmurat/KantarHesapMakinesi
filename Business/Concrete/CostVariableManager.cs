@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constans;
+using Business.ValidationRules.FluentValidation.CostVariable;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -18,15 +21,16 @@ namespace Business.Concrete
             _costVariableDal = costVariableDal;
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(CostVariableValidator))]
         public IResult Add(CostVariable costVariable, decimal xValue = 0, decimal yValue = 0)
         {
             var result = CostVariableCalculate(costVariable,xValue,yValue);
             if (result != null)
             {
                 _costVariableDal.Add(result);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataAdded);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataAdded);
         }
 
 
@@ -45,9 +49,9 @@ namespace Business.Concrete
             if (costVariable != null && costVariable.Id != 7)
             {
                 _costVariableDal.Delete(costVariable);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataDeleted);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataDeleted);
         }
         public IDataResult<List<CostVariable>> GetAllCostVariable()
         {
@@ -69,15 +73,16 @@ namespace Business.Concrete
             return new ErrorDataResult<CostVariable>();
         }
         [SecuredOperation("admin")]
+        [ValidationAspect(typeof(CostVariableValidator))]
         public IResult Update(CostVariable costVariable, decimal xValue = 0, decimal yValue = 0)
         {
             var result = CostVariableCalculate(costVariable, xValue, yValue);
             if (result != null && costVariable.Id != 7)
             {
                 _costVariableDal.Update(result);
-                return new SuccessResult();
+                return new SuccessResult(Messages.DataUpdate);
             }
-            return new ErrorResult();
+            return new ErrorResult(Messages.UnDataUpdate);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace DataAccess.Concrete.EntityFramework
                 var result = from apd in context.AccessoryPackageDetails
                              join a in context.Accessories
                              on apd.AccessoryId equals a.Id
-                             into accessoryPackageTemp
-                             from acpt in accessoryPackageTemp.DefaultIfEmpty()
+                             into accessoryTemp
+                             from act in accessoryTemp.DefaultIfEmpty()
                              join ap in context.AccessoryPackages
                              on apd.AccessoryPackageId equals ap.Id
                              
@@ -31,10 +31,10 @@ namespace DataAccess.Concrete.EntityFramework
                                  AccessoryPackageDetailAccessoryPackageId = apd.AccessoryPackageId,
                                  AccessoryPackageDetailAccessoryId = apd.AccessoryId,
                                  AccessoryPackageDetailAccessoryPcs = apd.AccessoryPcs,
-                                 AccessoryId = acpt.Id,
-                                 AccessoryName = acpt.AccessoryName,
-                                 AccessoryTlPrice = acpt.AccessoryTlPrice,
-                                 AccessoryEuroPrice = acpt.AccessoryEuroPrice,
+                                 AccessoryId = act.Id,
+                                 AccessoryName = act.AccessoryName,
+                                 AccessoryTlPrice = act.AccessoryTlPrice,
+                                 AccessoryEuroPrice = act.AccessoryEuroPrice,
                                  AccessoryPackageId = ap.Id,
                                  AccessoryPackageName = ap.AccessoryPackageName
                              };
