@@ -33,15 +33,11 @@ namespace Business.Concrete
                     ProductId = result.ModelProductId,
                     CostVariableId = result.CostVariableId,
                     MostSizeKg = result.ModelMostSizeKg,
-                    NetWeight = result.ModelNetWeight,
-                    Fire = result.ModelFire,
-                    FirePercentage = result.ModelFirePercentage,
                     ShateIronWeight = result.ModelShateIronWeight,
                     IProfilWeight = result.ModelIProfilWeight,
                     FireShateIronWeight = result.ModelFireShateIronWeight,
                     FireIProfileWeight = result.ModelFireIProfileWeight,
                     FireTotalWeight = result.ModelFireTotalWeight,
-                    GateWeight = result.ModelGateWeight,
                     ProductionTime = result.ModelProductionTime,
                 };
                 _modelDal.Add(model);
@@ -109,8 +105,6 @@ namespace Business.Concrete
             {
                 var getCostVariable = _costVariableService.GetById(modelDto.CostVariableId);
                 modelDto.CostVariableId = getCostVariable.Data.Id; // Hata
-                modelDto.ModelFirePercentage = getCostVariable.Data.FirePercentAge;
-                modelDto.ModelFire = (int)(Math.Round(modelDto.ModelFire + (modelDto.ModelNetWeight * getCostVariable.Data.FirePercentAge / 100)));
                 modelDto.ModelFireShateIronWeight = ((modelDto.ModelShateIronWeight + (modelDto.ModelShateIronWeight * getCostVariable.Data.FireShateIronAndIProfilePercentage / 100)));
                 modelDto.ModelFireIProfileWeight = (modelDto.ModelIProfilWeight + (modelDto.ModelIProfilWeight * getCostVariable.Data.FireShateIronAndIProfilePercentage / 100));
                 var decimalShateIronWeight = Convert.ToDecimal(modelDto.ModelShateIronWeight);
@@ -122,8 +116,6 @@ namespace Business.Concrete
             {
                 
                 modelDto.CostVariableId = costVariableFirst.Id;
-                modelDto.ModelFirePercentage = costVariableFirst.FirePercentAge;
-                modelDto.ModelFire = (int)(Math.Round(modelDto.ModelFire + (modelDto.ModelNetWeight * costVariableFirst.FirePercentAge / 100)));
                 modelDto.ModelFireShateIronWeight = (modelDto.ModelShateIronWeight + (modelDto.ModelShateIronWeight * costVariableFirst.FireShateIronAndIProfilePercentage / 100));
                 modelDto.ModelFireIProfileWeight = (modelDto.ModelIProfilWeight + (modelDto.ModelIProfilWeight * costVariableFirst.FireShateIronAndIProfilePercentage / 100));
                 var decimalShateIronWeight = Convert.ToDecimal(modelDto.ModelShateIronWeight);
@@ -146,15 +138,11 @@ namespace Business.Concrete
                     ProductId = result.ModelProductId,
                     CostVariableId = result.CostVariableId,
                     MostSizeKg = result.ModelMostSizeKg,
-                    NetWeight = result.ModelNetWeight,
-                    Fire = result.ModelFire,
-                    FirePercentage = result.ModelFirePercentage,
                     ShateIronWeight = result.ModelShateIronWeight,
                     IProfilWeight = result.ModelIProfilWeight,
                     FireShateIronWeight = result.ModelFireShateIronWeight,
                     FireIProfileWeight = result.ModelFireIProfileWeight,
                     FireTotalWeight = result.ModelFireTotalWeight,
-                    GateWeight = result.ModelGateWeight,
                     ProductionTime = result.ModelProductionTime,
                 };
                 _modelDal.Update(model);

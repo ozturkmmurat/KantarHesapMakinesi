@@ -26,22 +26,17 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelCostVariableId = m.CostVariableId,
                                  ModelProductId = m.ProductId,
                                  ModelMostSizeKg = m.MostSizeKg,
-                                 ModelNetWeight = m.NetWeight,
-                                 ModelFire = m.Fire,
-                                 ModelFirePercentage = m.FirePercentage,
                                  ModelShateIronWeight = m.ShateIronWeight,
                                  ModelIProfilWeight = m.IProfilWeight,
                                  ModelFireShateIronWeight = m.FireShateIronWeight,
                                  ModelFireIProfileWeight = m.FireIProfileWeight,
                                  ModelFireTotalWeight = m.FireIProfileWeight,
-                                 ModelGateWeight = m.GateWeight,
                                  ModelProductionTime = m.ProductionTime,
                                  CostVariableId = cv.Id,
                                  CostVariableIProfile = cv.IProfile,
                                  CostVariableShateIron = cv.ShateIron,
                                  CostVariableFireShateIronAndIProfilePercentage = cv.FireShateIronAndIProfilePercentage,
                                  CostVariableFireTotalPercentAge = cv.FireTotalPercentAge,
-                                 CostVariableFirePercentAge = cv.FirePercentAge,
                                  
                              };
                 return result.ToList();
@@ -62,22 +57,17 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelCostVariableId = m.CostVariableId,
                                  ModelProductId = m.ProductId,
                                  ModelMostSizeKg = m.MostSizeKg,
-                                 ModelNetWeight = m.NetWeight,
-                                 ModelFire = m.Fire,
-                                 ModelFirePercentage = m.FirePercentage,
                                  ModelShateIronWeight = m.ShateIronWeight,
                                  ModelIProfilWeight = m.IProfilWeight,
                                  ModelFireShateIronWeight = m.FireShateIronWeight,
                                  ModelFireIProfileWeight = m.FireIProfileWeight,
                                  ModelFireTotalWeight = m.FireIProfileWeight,
-                                 ModelGateWeight = m.GateWeight,
                                  ModelProductionTime = m.ProductionTime,
                                  CostVariableId = cv.Id,
                                  CostVariableIProfile = cv.IProfile,
                                  CostVariableShateIron = cv.ShateIron,
                                  CostVariableFireShateIronAndIProfilePercentage = cv.FireShateIronAndIProfilePercentage,
                                  CostVariableFireTotalPercentAge = cv.FireTotalPercentAge,
-                                 CostVariableFirePercentAge = cv.FirePercentAge
                              };
                 return result.FirstOrDefault();
             }

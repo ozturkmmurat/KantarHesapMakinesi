@@ -13,6 +13,5 @@ namespace Entities.Concrete
         public decimal ShateIron { get; set; }
         public decimal FireShateIronAndIProfilePercentage { get; set; }
         public decimal FireTotalPercentAge { get; set; }
-        public decimal FirePercentAge { get; set; }
     }
 }

@@ -11,15 +11,11 @@ namespace Entities.Concrete
         public int ProductId { get; set; }
         public int CostVariableId { get; set; }
         public string MostSizeKg { get; set; }
-        public int NetWeight { get; set; }
-        public int Fire { get; set; }
-        public decimal FirePercentage { get; set; }
         public int ShateIronWeight { get; set; }
         public int IProfilWeight { get; set; }
         public decimal FireShateIronWeight { get; set; }
         public decimal FireIProfileWeight { get; set; }
         public decimal FireTotalWeight { get; set; }
-        public int GateWeight { get; set; }
         public int ProductionTime { get; set; }
        
     }
