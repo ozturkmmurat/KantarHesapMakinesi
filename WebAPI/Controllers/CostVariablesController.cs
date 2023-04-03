@@ -46,9 +46,9 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("Add")]
-        public IActionResult Add(CostVariable costVariable,  decimal xValue,  decimal yValue)
+        public IActionResult Add(CostVariable costVariable)
         {
-            var result = _costVariableService.Add(costVariable, xValue, yValue);
+            var result = _costVariableService.Add(costVariable);
 
             if (result.Success)
             {
@@ -59,9 +59,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult Update(CostVariable costVariable, decimal xValue, decimal yValue)
+        public IActionResult Update(CostVariable costVariable)
         {
-            var result = _costVariableService.Update(costVariable, xValue, yValue);
+            var result = _costVariableService.Update(costVariable);
 
             if (result.Success)
             {

@@ -9,10 +9,10 @@ namespace Entities.Dtos
     {
         // Model Propertyleri 
         public int ModelId { get; set; }
+        public int ModelSizeId { get; set; }
         public int ModelProductId { get; set; }
         public int ModelCostVariableId { get; set; }
         public string ModelMostSizeKg { get; set; }
-        public decimal ModelFirePercentage { get; set; }
         public int ModelShateIronWeight { get; set; }
         public int ModelIProfilWeight { get; set; }
         public decimal ModelFireShateIronWeight { get; set; }

@@ -13,5 +13,7 @@ namespace Entities.Concrete
         public decimal ShateIron { get; set; }
         public decimal FireShateIronAndIProfilePercentage { get; set; }
         public decimal FireTotalPercentAge { get; set; }
+        public decimal LaborCostPerHourEuro { get; set; }
+        public decimal OverheadPercentage { get; set; }
     }
 }

@@ -10,8 +10,8 @@ namespace Business.Utilities.CostsCurrencyCalculation
         public static decimal EuroCalculation(decimal CurrencyAmount)
         {
             var EUR = CurrencyGet.GetEUR();
-            return CurrencyAmount * 20.15m;
-        }
+            return CurrencyAmount * EUR;
+       }
 
         public static decimal USDCalculation(decimal CurrencyAmount)
         {
@@ -22,7 +22,7 @@ namespace Business.Utilities.CostsCurrencyCalculation
         public static decimal TLEuroCalculation(decimal CurrencyAmount)
         {
             var TL = CurrencyGet.GetEUR();
-            return CurrencyAmount / 20.15m;
+            return CurrencyAmount / TL;
         }
     }
 }

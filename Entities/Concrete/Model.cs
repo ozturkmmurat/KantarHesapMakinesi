@@ -8,6 +8,7 @@ namespace Entities.Concrete
     public class Model : IEntity
     {
         public int Id { get; set; }
+        public int SizeId { get; set; }
         public int ProductId { get; set; }
         public int CostVariableId { get; set; }
         public string MostSizeKg { get; set; }
@@ -17,6 +18,6 @@ namespace Entities.Concrete
         public decimal FireIProfileWeight { get; set; }
         public decimal FireTotalWeight { get; set; }
         public int ProductionTime { get; set; }
-       
+
     }
 }

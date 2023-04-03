@@ -31,6 +31,7 @@ namespace Business.Concrete
                 Model model = new Model()
                 {
                     ProductId = result.ModelProductId,
+                    SizeId = result.ModelSizeId,
                     CostVariableId = result.CostVariableId,
                     MostSizeKg = result.ModelMostSizeKg,
                     ShateIronWeight = result.ModelShateIronWeight,
@@ -56,7 +57,17 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-
+        [SecuredOperation("admin")]
+        public IDataResult<List<Model>> GetAllByProductId(int productId)
+        {
+            var result = _modelDal.GetAll(x => x.ProductId == productId);
+            if (result != null)
+            {
+                return new SuccessDataResult<List<Model>>(result);
+            }
+            return new ErrorDataResult<List<Model>>(Messages.GetByAllDefault);
+        }
+        [SecuredOperation("admin")]
         public IDataResult<List<Model>> GetAllModel()
         {
             var result = _modelDal.GetAll();
@@ -66,7 +77,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Model>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<ModelDto>> GetAllModelDto()
         {
             var result = _modelDal.GetAllModelDto();
@@ -76,7 +87,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<ModelDto>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Model> GetById(int id)
         {
             var result = _modelDal.Get(x=> x.Id == id);
@@ -87,6 +98,7 @@ namespace Business.Concrete
             return new ErrorDataResult<Model>();
         }
 
+        [SecuredOperation("admin")]
         public IDataResult<ModelDto> GetModelDtoById(int id)
         {
             var result = _modelDal.GetModelModelDtoById(id);
@@ -96,7 +108,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<ModelDto>();
         }
-
+        [SecuredOperation("admin")]
         public ModelDto ModelInFormation(ModelDto modelDto)
         {
             var costVariableFirst = _costVariableService.GetAllCostVariable().Data.FirstOrDefault();
@@ -137,6 +149,7 @@ namespace Business.Concrete
                     Id = result.ModelId,
                     ProductId = result.ModelProductId,
                     CostVariableId = result.CostVariableId,
+                    SizeId = result.ModelSizeId,
                     MostSizeKg = result.ModelMostSizeKg,
                     ShateIronWeight = result.ModelShateIronWeight,
                     IProfilWeight = result.ModelIProfilWeight,

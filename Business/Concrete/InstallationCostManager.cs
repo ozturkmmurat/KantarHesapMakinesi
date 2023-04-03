@@ -45,7 +45,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<InstallationCost>> GetAllInstallationCost()
         {
             var result = _installationCostDal.GetAll();
@@ -55,7 +55,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<InstallationCost>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<InstallationCostDto>> GetAllInstallationCostDto()
         {
             var result = _installationCostDal.GetAllInstallationCostDto();
@@ -65,7 +65,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<InstallationCostDto>>();
         }
-
         public IDataResult<InstallationCost> GetById(int id)
         {
             var result = _installationCostDal.Get(x => x.Id == id);
@@ -75,7 +74,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<InstallationCost>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<InstallationCostDto> GetInstallationCostByLocationId(int locationId)
         {
             var result = _installationCostDal.GetByIdProductModelCostDetailDto(x=> x.LocationId == locationId);

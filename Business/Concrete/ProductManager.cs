@@ -39,7 +39,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<Product>> GetAllProduct()
         {
             var result = _productDal.GetAll();
@@ -49,7 +49,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Product>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<ProductDto>> GetAllProductDto()
         {
             var result = _productDal.GetAllProductDto();
@@ -59,7 +59,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<ProductDto>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Product> GetById(int id)
         {
             var result = _productDal.Get(x => x.Id == id);

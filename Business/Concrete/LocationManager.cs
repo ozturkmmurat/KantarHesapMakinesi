@@ -37,7 +37,7 @@ namespace Business.Concrete
             }
             return new ErrorResult();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<Location>> GetAllLocation()
         {
             var result = _locationDal.GetAll();
@@ -47,7 +47,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Location>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Location> GetById(int id)
         {
             throw new NotImplementedException();

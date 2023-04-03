@@ -43,7 +43,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<Electronic>> GetAllElectronic()
         {
             var result = _electronicDal.GetAll();
@@ -53,7 +53,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Electronic>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Electronic> GetById(int id)
         {
             var result = _electronicDal.Get(x => x.Id == id);

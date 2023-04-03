@@ -22,27 +22,16 @@ namespace Business.Concrete
         }
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CostVariableValidator))]
-        public IResult Add(CostVariable costVariable, decimal xValue = 0, decimal yValue = 0)
+        public IResult Add(CostVariable costVariable)
         {
-            var result = CostVariableCalculate(costVariable,xValue,yValue);
-            if (result != null)
+            if (costVariable != null)
             {
-                _costVariableDal.Add(result);
+                _costVariableDal.Add(costVariable);
                 return new SuccessResult(Messages.DataAdded);
             }
             return new ErrorResult(Messages.UnDataAdded);
         }
 
-
-        public CostVariable CostVariableCalculate(CostVariable costVariable, decimal xValue, decimal yValue)
-        {
-            if (costVariable != null && xValue != 0 && yValue != 0)
-            {
-                costVariable.ShateIron = xValue / yValue;
-                return costVariable;
-            }
-            return costVariable;
-        }
         [SecuredOperation("admin")]
         public IResult Delete(CostVariable costVariable)
         {
@@ -53,6 +42,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
+        [SecuredOperation("admin")]
         public IDataResult<List<CostVariable>> GetAllCostVariable()
         {
             var result = _costVariableDal.GetAll();
@@ -62,7 +52,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<CostVariable>>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<CostVariable> GetById(int id)
         {
             var result = _costVariableDal.Get(x => x.Id == id);
@@ -74,12 +64,11 @@ namespace Business.Concrete
         }
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CostVariableValidator))]
-        public IResult Update(CostVariable costVariable, decimal xValue = 0, decimal yValue = 0)
+        public IResult Update(CostVariable costVariable)
         {
-            var result = CostVariableCalculate(costVariable, xValue, yValue);
-            if (result != null && costVariable.Id != 7)
+            if (costVariable != null)
             {
-                _costVariableDal.Update(result);
+                _costVariableDal.Update(costVariable);
                 return new SuccessResult(Messages.DataUpdate);
             }
             return new ErrorResult(Messages.UnDataUpdate);

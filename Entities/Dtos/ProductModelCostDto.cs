@@ -14,47 +14,23 @@ namespace Entities.Dtos
         public decimal ProductModelCostIProfileEuroPrice { get; set; }
         public decimal ProductModelCostMaterialTlAmount { get; set; }
         public decimal ProductModelCostMaterialEuroAmount { get; set; }
-        public decimal ProductModelCostLaborCostPerHour { get; set; }
-        public decimal ProductModelCostTotalLaborCost { get; set; }
+        public decimal ProductModelCostTotalLaborCostTl { get; set; }
+        public decimal ProductModelCostTotalLaborCostEuro { get; set; }
         public decimal ProductModelCostTotalAmount { get; set; }
-        public int ProductModelCostOverheadPercentage { get; set; }
         public decimal ProductModelCostGeneralExpenseAmount { get; set; }
         public decimal ProductModelCostOverheadIncluded { get; set; }
         public decimal ProductModelCostElectronicTlAmount { get; set; }
         public decimal ProductModelCostElectronicEuroAmount { get; set; }
-        public decimal ProductModelCostAccessoriesTlAmount { get; set; }
-        public decimal ProductModelCostAccessoriesEuroAmount { get; set; }
+        public decimal ProductModelCostProfitPercentage { get; set; }
+        public decimal ProductModelCostAdditionalProfitPercentage { get; set; }
 
         // Model Propertyleri
         public int ModelId { get; set; }
+        public int ModelCostVariableId { get; set; }
         public int ModelProductionTime { get; set; }
 
-        // Product Propertyleri
-        public int ProductId { get; set; }
+        //Cost Variable Propertyleri
+        public decimal LaborCostPerHourEuro { get; set; }
 
-        //ProductModelCostDetail Propertyleri
-        public int ProductModelCostDetailId { get; set; }
-        public int ProductModelCostDetailInstallationCostId { get; set; }
-        public int ProductModelCostDetailProductModelCostId { get; set; }
-        public decimal ProductModelCostDetailInstallationIncluded { get; set; }
-        public decimal ProductModelCostDetailSalesPrice { get; set; }
-        public decimal ProductModelCostDetailTurkeySalesPrice { get; set; }
-        public decimal ProductModelCostDetailProfitPercentage { get; set; }
-        public decimal ProductModelCostDetailProfitPrice { get; set; }
-        public decimal ProductModelCostDetailTurkeySalesDiscount { get; set; }
-        public decimal ProductModelCostDetailTurkeySalesDiscountPrice { get; set; }
-        public decimal ProductModelCostDetailExportFinalDiscount { get; set; }
-        public decimal ProductModelCostDetailExportFinalDiscountPrice { get; set; }
-
-
-        //InstallationCost Details
-        public int InstallationCostId { get; set; }
-        public int InstallationCostLocationId { get; set; }
-        public decimal InstallationCostInstallationTlPrice { get; set; }
-        public decimal InstallationCostInstallationEuroPrice { get; set; }
-
-        //Location Propertyleri
-        public int LocationId { get; set; }
-        public string LocationCityName { get; set; }
     }
 }

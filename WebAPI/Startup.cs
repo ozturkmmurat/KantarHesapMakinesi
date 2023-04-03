@@ -40,6 +40,7 @@ namespace WebAPI
 
             services.AddCors();
 
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -68,13 +69,12 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
             app.ConfigureCustomExceptionMiddleware(); // MiddleWare yaşam döngüsünde hata yakalama middleware de çalıştır diyoruz.
+            
 
             app.UseCors(builder =>
             {
                 builder.WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin();
+                .AllowAnyHeader();
             });
 
             app.UseHttpsRedirection();

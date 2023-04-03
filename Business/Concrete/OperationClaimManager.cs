@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Core.Entities.Concrete;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
@@ -16,6 +17,7 @@ namespace Business.Concrete
         {
             _operationClaimDal = operationClaimDal;
         }
+        [SecuredOperation("admin")]
         public IDataResult<List<OperationClaim>> GetAllOperationClaim()
         {
             var result = _operationClaimDal.GetAll();

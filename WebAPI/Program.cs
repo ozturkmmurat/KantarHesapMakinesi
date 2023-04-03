@@ -3,12 +3,14 @@ using Autofac.Extensions.DependencyInjection;
 using Business.DependecyResolvers.Autofac;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.BackgroundServices;
 
 namespace WebAPI
 {
@@ -17,6 +19,7 @@ namespace WebAPI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -29,6 +32,10 @@ namespace WebAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddHostedService<DailyMethods>();
+            });
     }
 }

@@ -46,7 +46,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<List<Accessory>> GetAllAccessory()
         {
             var result = _accessoryDal.GetAll();
@@ -56,7 +56,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Accessory>>();
         }
-
         public IDataResult<Accessory> GetById(int id)
         {
             var result = _accessoryDal.Get(x => x.Id == id);
@@ -66,7 +65,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<Accessory>();
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Accessory> GetByName(string name)
         {
             var result = _accessoryDal.Get(x => x.AccessoryName == name);
