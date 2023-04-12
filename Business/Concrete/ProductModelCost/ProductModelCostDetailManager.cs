@@ -3,6 +3,8 @@ using Business.Abstract.ProductModelCost;
 using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract.ProductModelCost;
@@ -14,6 +16,7 @@ using System.Text;
 
 namespace Business.Concrete.ProductModelCost
 {
+    [LogAspect(typeof(FileLogger))]
     public class ProductModelCostDetailManager : IProductModelCostDetailService
     {
         IProductModelCostDetailDal _productModelCostDetailDal;

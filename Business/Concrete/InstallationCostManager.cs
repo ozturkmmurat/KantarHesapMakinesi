@@ -3,7 +3,9 @@ using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
 using Business.ValidationRules.InstallationCost;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -15,6 +17,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class InstallationCostManager : IInstallationCostService
     {
         IInstallationCostDal _installationCostDal;
@@ -55,7 +58,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<InstallationCost>>();
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<InstallationCostDto>> GetAllInstallationCostDto()
         {
             var result = _installationCostDal.GetAllInstallationCostDto();
@@ -74,7 +76,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<InstallationCost>();
         }
-        [SecuredOperation("admin")]
         public IDataResult<InstallationCostDto> GetInstallationCostByLocationId(int locationId)
         {
             var result = _installationCostDal.GetByIdProductModelCostDetailDto(x=> x.LocationId == locationId);

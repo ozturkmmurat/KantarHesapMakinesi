@@ -31,7 +31,7 @@ namespace Business.BusinessAspects.Autofac
         protected override void OnBefore(IInvocation invocation)
         {
             try
-            {
+           {
                 var checkNameIdentifier = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 var checkNameIdentifierNull = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value == null;
             }

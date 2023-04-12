@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.IO;
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -24,7 +27,10 @@ namespace WebAPI.Controllers
         private ICacheManager _cacheManager;
         private TokenOptions _tokenOptions;
 
-        public AuthController(IAuthService authService, IUserService userService, ICacheManager cacheManager, IConfiguration configuration)
+        public AuthController(IAuthService authService,
+            IUserService userService,
+            ICacheManager cacheManager,
+            IConfiguration configuration)
         {
             _authService = authService;
             _userService = userService;
@@ -36,13 +42,14 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public ActionResult Login(UserForLoginDto userForLoginDto)
         {
+
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin.Message);
             }
 
-
+            
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
@@ -60,7 +67,6 @@ namespace WebAPI.Controllers
                 _userService.UpdateRefreshToken(refreshToken);
                 return Ok(result);
             }
-
             return BadRequest(result.Message);
         }
 

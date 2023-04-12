@@ -35,7 +35,12 @@ namespace WebAPI
                 })
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddHostedService<DailyMethods>();
-            });
+            services.AddHostedService<DailyMethods>();
+        }).ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.SetMinimumLevel(LogLevel.Trace);
+        });
+
     }
 }

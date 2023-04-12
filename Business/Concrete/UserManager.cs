@@ -4,8 +4,10 @@ using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.ValidationRules.FluentValidation;
 using Business.ValidationRules.FluentValidation.User;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Entities.Concrete;
 using Core.Entities.Dtos;
 using Core.Utilities.Result.Abstract;
@@ -19,6 +21,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class UserManager : IUserService
     {
         IUserDal _userDal;
@@ -152,7 +155,7 @@ namespace Business.Concrete
             var userToCheck = GetByMail(email);
             if (userToCheck == null)
             {
-                return new ErrorDataResult<Core.Entities.Concrete.User>();
+                return new ErrorDataResult<Core.Entities.Concrete.User>(Messages.UserCheck);
             }
             return new SuccessResult();
         }

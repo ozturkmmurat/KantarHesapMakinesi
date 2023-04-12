@@ -21,14 +21,13 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public IActionResult GetAllProduct()
         {
-            var result = _productCostService.GetAllProduct();
+                var result = _productCostService.GetAllProduct();
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
         }
 
         [HttpGet("GetAllDto")]

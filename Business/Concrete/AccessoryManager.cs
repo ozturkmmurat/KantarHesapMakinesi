@@ -3,9 +3,11 @@ using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
 using Business.ValidationRules.FluentValidation.Accessory;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -16,6 +18,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class AccessoryManager : IAccessoryService
     {
         IAccessoryDal _accessoryDal;
@@ -46,7 +49,6 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<Accessory>> GetAllAccessory()
         {
             var result = _accessoryDal.GetAll();

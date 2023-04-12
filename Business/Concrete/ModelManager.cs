@@ -10,9 +10,12 @@ using System.Linq;
 using Entities.Dtos;
 using Business.BusinessAspects.Autofac;
 using Business.Constans;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
+using Core.Aspects.Autofac.Logging;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class ModelManager : IModelService
     {
         IModelDal _modelDal;
@@ -57,7 +60,6 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<Model>> GetAllByProductId(int productId)
         {
             var result = _modelDal.GetAll(x => x.ProductId == productId);
@@ -77,7 +79,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<Model>>();
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<ModelDto>> GetAllModelDto()
         {
             var result = _modelDal.GetAllModelDto();

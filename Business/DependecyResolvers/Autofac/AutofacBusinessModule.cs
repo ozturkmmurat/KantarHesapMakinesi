@@ -9,6 +9,7 @@ using Business.Concrete.ProductModelCost;
 using Business.Concrete.SP;
 using Business.Concrete.User;
 using Castle.DynamicProxy;
+using Core.Utilities.Helpers.MailHelper;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -74,6 +75,9 @@ namespace Business.DependecyResolvers.Autofac
 
             builder.RegisterType<DailyCalculationManager>().As<IDailyCalculationService>().SingleInstance();
             builder.RegisterType<EfDailyCalculationDal>().As<IDailyCalculationDal>().SingleInstance();
+
+            builder.RegisterType<MailManager>().As<IMailService>().SingleInstance();
+            builder.RegisterType<MailHelper>().As<IMailHelper>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

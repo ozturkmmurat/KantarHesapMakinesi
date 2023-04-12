@@ -1,5 +1,7 @@
 ﻿using Business.Abstract.User;
 using Business.Constans;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Entities.Concrete;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
@@ -11,12 +13,23 @@ using System.Text;
 
 namespace Business.Concrete.User
 {
+    [LogAspect(typeof(FileLogger))]
     public class UserOperationClaimManager : IUserOperationClaimService
     {
         IUserOperationClaimDal _userOperationClaimDal;
         public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal)
         {
             _userOperationClaimDal = userOperationClaimDal;
+        }
+
+        public IResult Add(UserOperationClaim userOperationClaim)
+        {
+            if (userOperationClaim != null)
+            {
+                _userOperationClaimDal.Add(userOperationClaim);
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
 
         public IDataResult<List<UserOperationClaim>> GetAllUserOpeartionClaim()

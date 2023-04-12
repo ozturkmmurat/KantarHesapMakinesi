@@ -3,7 +3,9 @@ using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Business.Utilities.CostsCurrencyCalculation;
 using Business.ValidationRules.Electronic;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -14,6 +16,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class ElectronicManager : IElectronicService
     {
         IElectronicDal _electronicDal;

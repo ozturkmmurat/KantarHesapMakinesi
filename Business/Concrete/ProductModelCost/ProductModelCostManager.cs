@@ -14,9 +14,12 @@ using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Core.Aspects.Autofac.Validation;
 using Business.ValidationRules.ProductModelCost;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
+using Core.Aspects.Autofac.Logging;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class ProductModelCostManager : IProductModelCostService
     {
         IProductModelCostDal _productModelCostDal;
@@ -196,7 +199,7 @@ namespace Business.Concrete
             {
                 var result = CostCalculate(productModelCostDto);
                 Update(MappingProductModelCost(result).Data);
-                return new SuccessResult(Messages.DataAdded);
+                return new SuccessResult(Messages.DataUpdate);
             }
             return new ErrorResult(Messages.UnDataUpdate);
         }

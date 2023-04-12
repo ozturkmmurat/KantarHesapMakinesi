@@ -10,6 +10,7 @@ namespace Business.Abstract.User
     public interface IUserOperationClaimService
     {
         IDataResult<List<UserOperationClaim>> GetAllUserOpeartionClaim();
+        IResult Add(UserOperationClaim userOperationClaim);
         IResult Update(UserOperationClaim userOperationClaim);
     }
 }

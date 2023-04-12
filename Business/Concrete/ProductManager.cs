@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constans;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -12,6 +14,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(FileLogger))]
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
@@ -39,15 +42,14 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<Product>> GetAllProduct()
         {
             var result = _productDal.GetAll();
             if (result != null)
             {
-                return new SuccessDataResult<List<Product>>(result);
+                return new SuccessDataResult<List<Product>>(result, Messages.GetByAll);
             }
-            return new ErrorDataResult<List<Product>>();
+            return new ErrorDataResult<List<Product>>(result, Messages.GetByAllDefault);
         }
         [SecuredOperation("admin")]
         public IDataResult<List<ProductDto>> GetAllProductDto()
