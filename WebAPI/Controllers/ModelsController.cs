@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
             _modelService = modelService;
         }
         [HttpGet("GetAll")]
-        public IActionResult GetAllProduct()
+        public IActionResult GetAllModel()
         {
             var result = _modelService.GetAllModel();
 

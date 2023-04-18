@@ -25,6 +25,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using WebAPI.BackgroundServices;
+
 namespace WebAPI
 {
     public class Startup
@@ -35,13 +37,17 @@ namespace WebAPI
         }
 
         public IConfiguration Configuration { get; }
-
+        //burada nerede çalıştırmışım background servicei
+        // burada çalıştırmışsın demedim ki niye iki tane background service var dedim  iki tane ? anlamadım o zaten projeyi oluşturunca geliyor
+        // configureservices orayı diyorsan 
+        // çiçek gibi oldu :D :D bana küçücük oldu :D 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR"); // Projeyi canlıya atınca Fluent Validation da WithMessage alanı icerisindeki Mesaj bazı bolumlerde ingilizce olarak geliyor
                                                                                         // Bunu önlemek için default dilimizin Turkce olduğunu belirtiyoruz.
+            services.AddHostedService<DailyMethods>(); // startupın içerisinde var ya configure services burada ne işi var ? patlatır programını ikisi olması startup da nerede
 
             services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -71,7 +77,7 @@ namespace WebAPI
              new CoreModule()
             }); ;
         }
-
+        // nerde koydun background servisi ? göstereyim
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

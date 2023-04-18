@@ -18,6 +18,12 @@
       }
     },
     "WebAPI": {
+      //sen exe çalıştırdığında çalışan yer bura peki şu sslport ne olyuor yuakrıdaki ?
+      //yukarıdaki ayarlar hep çalıştırma profilleri bak şöyle 
+      // görün mü sen exe çalıştırınca burası çalıştırılıyor anladım peki aşağıdaki
+      // 5000 değiştirskeo  sunucu da cmd boş geliyor ya düzelir mi ki 
+      // bundan kaynaklı mı ki acaba büyük ihtimalle vardır 5000 de falan bir proje
+      // çok proje var çünkü orada
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
