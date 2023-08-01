@@ -14,8 +14,9 @@ namespace Business.Abstract
         IDataResult<Model> GetById(int id);
         IDataResult<List<Model>> GetAllByProductId(int productId);
         IDataResult<ModelDto> GetModelDtoById(int id);
-        IResult Add(ModelDto modelDto);
-        IResult Update(ModelDto modelDto);
+        IResult AddDto(ModelDto modelDto);
+        IResult UpdateDto(ModelDto modelDto);
+        IResult Update(Model model);
         IResult Delete(Model model);
         ModelDto ModelInFormation(ModelDto modelDto);
     }

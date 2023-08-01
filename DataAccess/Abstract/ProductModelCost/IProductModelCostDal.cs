@@ -11,6 +11,7 @@ namespace DataAccess.Abstract
     public interface IProductModelCostDal : IEntityRepository<Entities.Concrete.ProductModelCost>
     {
         void CustomAdd(Entities.Concrete.ProductModelCost product);
+        List<ProductModelCostDto> GetAllDto();
         List<ProductModelCostDto> GetAllProductModelCostDtoById(Expression<Func<ProductModelCostDto, bool>> filter = null);
         ProductModelCostDto GetProductModelCostDtoById(Expression<Func<ProductModelCostDto, bool>> filter = null);
     }

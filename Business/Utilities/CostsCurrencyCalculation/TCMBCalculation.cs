@@ -7,22 +7,21 @@ namespace Business.Utilities.CostsCurrencyCalculation
 {
     public static  class TCMBCalculation
     {
-        public static decimal EuroCalculation(decimal CurrencyAmount)
+        public static decimal CurrencyCalculation(decimal currencyAmount, decimal currency)
         {
-            var EUR = CurrencyGet.GetEUR();
-            return CurrencyAmount * EUR;
-       }
-
-        public static decimal USDCalculation(decimal CurrencyAmount)
-        {
-            var USD = CurrencyGet.GetUSD();
-            return CurrencyAmount * USD;
+            return currencyAmount * currency;
         }
 
-        public static decimal TLEuroCalculation(decimal CurrencyAmount)
+        public static decimal DivideCurrencyCalculation(decimal currencyAmount, decimal currency)
         {
-            var TL = CurrencyGet.GetEUR();
-            return CurrencyAmount / TL;
+            return currencyAmount / currency;
+        }
+
+        public static decimal EuroBasedCurrencyCalculate(decimal currencyAmount, decimal currency, decimal calculateCurrency)
+        {
+            var result = calculateCurrency / currency;
+            var x = Math.Round(result, 4);
+            return currencyAmount * x;
         }
     }
 }

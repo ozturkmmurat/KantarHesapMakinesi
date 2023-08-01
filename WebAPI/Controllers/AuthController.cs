@@ -74,6 +74,10 @@ namespace WebAPI.Controllers
         public ActionResult RefreshTokenLogin(string refreshToken)
         {
             var user = _userService.GetByRefreshToken(refreshToken).Data;
+            if (user == null)
+            {
+                throw new SecuredOperationException(UserMessages.RefreshTokenExpired);
+            }
             var result = _authService.CreateAccessToken(user);
             if (user.RefreshTokenEndDate > DateTime.Now)
             {

@@ -45,10 +45,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
-        [HttpGet("GetProductModelCostDtoByModelId")]
-        public IActionResult GetProductModelCostDtoByModelId(int modelId)
+        [HttpGet("GetProductModelCostDtoByModelIdCurrency")]
+        public IActionResult GetProductModelCostDtoByModelIdCurrency(int modelId, string currencyName = "TRY")
         {
-            var result = _productModelCostService.GetProductModelCostDtoByModelId(modelId);
+            var result = _productModelCostService.GetProductModelCostDtoByModelIdCurrency(modelId, currencyName);
 
             if (result.Success)
             {

@@ -19,6 +19,8 @@ namespace Entities.Dtos
         public decimal ModelFireIProfileWeight { get; set; }
         public decimal ModelFireTotalWeight { get; set; }
         public int ModelProductionTime { get; set; }
+        public decimal ProfitPercentage { get; set; }
+        public decimal AdditionalProfitPercentage { get; set; }
 
 
         // Cost Variable Propertyleri

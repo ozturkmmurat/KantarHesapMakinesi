@@ -112,7 +112,7 @@ namespace Business.Concrete
                     PasswordSalt = result.Data.PasswordSalt,
                     RefreshToken = result.Data.RefreshToken,
                     RefreshTokenEndDate = result.Data.RefreshTokenEndDate,
-                    Status = result.Data.Status
+                    Status = userForUpdateDto.Status
                 };
                 _userDal.Update(user);
             }

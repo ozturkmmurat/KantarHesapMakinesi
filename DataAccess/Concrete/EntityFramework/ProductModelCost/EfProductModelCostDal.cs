@@ -39,33 +39,31 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 var result = from pmc in context.ProductModelCosts
                              join m in context.Models
-                             on pmc.Id equals m.Id
+                             on pmc.ModelId equals m.Id
                              join cv in context.CostVariables
                              on m.CostVariableId equals cv.Id
 
                              select new ProductModelCostDto
                              {
                                  ProductModelCostId = pmc.Id,
-                                 ProductModelCostShateIronEuroPrice = pmc.ShateIronEuroPrice,
-                                 ProductModelCostIProfileEuroPrice = pmc.IProfileEuroPrice,
-                                 ProductModelCostMaterialTlAmount = pmc.MaterialTlAmount,
-                                 ProductModelCostMaterialEuroAmount = pmc.MaterialEuroAmount,
-                                 ProductModelCostTotalLaborCostTl = pmc.TotalLaborCostTl,
-                                 ProductModelCostTotalLaborCostEuro = pmc.TotalLaborCostEuro,
-                                 ProductModelCostTotalAmount = pmc.TotalAmount,
-                                 ProductModelCostGeneralExpenseAmount = pmc.GeneralExpenseAmount,
-                                 ProductModelCostOverheadIncluded = pmc.OverheadIncluded,
-                                 ProductModelCostElectronicTlAmount = pmc.ElectronicTlAmount,
-                                 ProductModelCostElectronicEuroAmount = pmc.ElectronicEuroAmount,
+                                 ShateIronPrice = pmc.ShateIronPrice,
+                                 IProfilePrice = pmc.IProfilePrice,
+                                 MaterialAmount = pmc.MaterialAmount,
+                                 TotalLaborCost = pmc.TotalLaborCost,
+                                 TotalAmount = pmc.TotalAmount,
+                                 GeneralExpenseAmount = pmc.GeneralExpenseAmount,
+                                 OverheadIncluded = pmc.OverheadIncluded,
+                                 ElectronicAmount = pmc.ElectronicAmount,
+                                 CurrencyName = pmc.CurrencyName,
 
                                  ModelId = m.Id,
                                  ModelProductionTime = m.ProductionTime,
 
-                                 ProductModelCostProfitPercentage = pmc.ProfitPercentage,
-                                 ProductModelCostAdditionalProfitPercentage = pmc.AdditionalProfitPercentage,
+                                 ProfitPercentage = m.ProfitPercentage,
+                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
 
                                  ModelCostVariableId = cv.Id,
-                                LaborCostPerHourEuro = cv.LaborCostPerHourEuro
+                                 LaborCostPerHourEuro = cv.LaborCostPerHourEuro
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
@@ -77,35 +75,69 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 var result = from pmc in context.ProductModelCosts
                              join m in context.Models
-                             on pmc.Id equals m.Id
+                             on pmc.ModelId equals m.Id
                              join cv in context.CostVariables
                              on m.CostVariableId equals cv.Id
 
                              select new ProductModelCostDto
                              {
                                  ProductModelCostId = pmc.Id,
-                                 ProductModelCostShateIronEuroPrice = pmc.ShateIronEuroPrice,
-                                 ProductModelCostIProfileEuroPrice = pmc.IProfileEuroPrice,
-                                 ProductModelCostMaterialTlAmount = pmc.MaterialTlAmount,
-                                 ProductModelCostMaterialEuroAmount = pmc.MaterialEuroAmount,
-                                 ProductModelCostTotalLaborCostTl = pmc.TotalLaborCostTl,
-                                 ProductModelCostTotalLaborCostEuro = pmc.TotalLaborCostEuro,
-                                 ProductModelCostTotalAmount = pmc.TotalAmount,
-                                 ProductModelCostGeneralExpenseAmount = pmc.GeneralExpenseAmount,
-                                 ProductModelCostOverheadIncluded = pmc.OverheadIncluded,
-                                 ProductModelCostElectronicTlAmount = pmc.ElectronicTlAmount,
-                                 ProductModelCostElectronicEuroAmount = pmc.ElectronicEuroAmount,
+                                 ShateIronPrice = pmc.ShateIronPrice,
+                                 IProfilePrice = pmc.IProfilePrice,
+                                 MaterialAmount = pmc.MaterialAmount,
+                                 TotalLaborCost = pmc.TotalLaborCost,
+                                 TotalAmount = pmc.TotalAmount,
+                                 GeneralExpenseAmount = pmc.GeneralExpenseAmount,
+                                 OverheadIncluded = pmc.OverheadIncluded,
+                                 ElectronicAmount = pmc.ElectronicAmount,
+                                 CurrencyName = pmc.CurrencyName,
 
                                  ModelId = m.Id,
                                  ModelProductionTime = m.ProductionTime,
 
-                                 ProductModelCostProfitPercentage = pmc.ProfitPercentage,
-                                 ProductModelCostAdditionalProfitPercentage = pmc.AdditionalProfitPercentage,
+                                 ProfitPercentage = m.ProfitPercentage,
+                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
 
                                  ModelCostVariableId = cv.Id,
                                  LaborCostPerHourEuro = cv.LaborCostPerHourEuro
                              };
                 return result.Where(filter).FirstOrDefault();
+            }
+        }
+
+        public List<ProductModelCostDto> GetAllDto()
+        {
+            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
+            {
+                var result = from pmc in context.ProductModelCosts
+                             join m in context.Models
+                             on pmc.ModelId equals m.Id
+                             join cv in context.CostVariables
+                             on m.CostVariableId equals cv.Id
+
+                             select new ProductModelCostDto
+                             {
+                                 ProductModelCostId = pmc.Id,
+                                 ShateIronPrice = pmc.ShateIronPrice,
+                                 IProfilePrice = pmc.IProfilePrice,
+                                 MaterialAmount = pmc.MaterialAmount,
+                                 TotalLaborCost = pmc.TotalLaborCost,
+                                 TotalAmount = pmc.TotalAmount,
+                                 GeneralExpenseAmount = pmc.GeneralExpenseAmount,
+                                 OverheadIncluded = pmc.OverheadIncluded,
+                                 ElectronicAmount = pmc.ElectronicAmount,
+                                 CurrencyName = pmc.CurrencyName,
+
+                                 ModelId = m.Id,
+                                 ModelProductionTime = m.ProductionTime,
+
+                                 ProfitPercentage = m.ProfitPercentage,
+                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
+
+                                 ModelCostVariableId = cv.Id,
+                                 LaborCostPerHourEuro = cv.LaborCostPerHourEuro,
+                             };
+                return result.ToList();
             }
         }
     }

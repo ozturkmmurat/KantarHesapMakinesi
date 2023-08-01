@@ -10,7 +10,7 @@ namespace Business.ValidationRules.ProductModelCost
     {
         public ProductModelCostDtoValidator()
         {
-            RuleFor(pmcd => pmcd.ProductModelCostProfitPercentage).NotEmpty().When(pmcd => pmcd.ProductModelCostProfitPercentage <= 0).WithMessage("Kar yüzdesi 0 ve 0 dan düşük olamaz.");
+            RuleFor(pmcd => pmcd.ProfitPercentage).NotEmpty().When(pmcd => pmcd.ProfitPercentage <= 0).WithMessage("Kar yüzdesi 0 ve 0 dan düşük olamaz.");
         }
     }
 }

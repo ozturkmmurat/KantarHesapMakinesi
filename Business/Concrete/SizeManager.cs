@@ -65,7 +65,6 @@ namespace Business.Concrete
             return new ErrorDataResult<List<Size>>(Messages.GetByAllDefault);
         }
 
-        [SecuredOperation("admin")]
         public IDataResult<Size> GetById(int id)
         {
             var result = _sizeDal.Get(x => x.Id == id);

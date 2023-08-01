@@ -10,24 +10,22 @@ namespace Entities.Dtos
     {
         // Product Model Cost Propertyleri
         public int ProductModelCostId { get; set; }
-        public decimal ProductModelCostShateIronEuroPrice { get; set; }
-        public decimal ProductModelCostIProfileEuroPrice { get; set; }
-        public decimal ProductModelCostMaterialTlAmount { get; set; }
-        public decimal ProductModelCostMaterialEuroAmount { get; set; }
-        public decimal ProductModelCostTotalLaborCostTl { get; set; }
-        public decimal ProductModelCostTotalLaborCostEuro { get; set; }
-        public decimal ProductModelCostTotalAmount { get; set; }
-        public decimal ProductModelCostGeneralExpenseAmount { get; set; }
-        public decimal ProductModelCostOverheadIncluded { get; set; }
-        public decimal ProductModelCostElectronicTlAmount { get; set; }
-        public decimal ProductModelCostElectronicEuroAmount { get; set; }
-        public decimal ProductModelCostProfitPercentage { get; set; }
-        public decimal ProductModelCostAdditionalProfitPercentage { get; set; }
+        public string CurrencyName { get; set; }
+        public decimal ShateIronPrice { get; set; }
+        public decimal IProfilePrice { get; set; }
+        public decimal MaterialAmount { get; set; }
+        public decimal TotalLaborCost { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal GeneralExpenseAmount { get; set; }
+        public decimal OverheadIncluded { get; set; }
+        public decimal ElectronicAmount { get; set; }
 
         // Model Propertyleri
         public int ModelId { get; set; }
         public int ModelCostVariableId { get; set; }
         public int ModelProductionTime { get; set; }
+        public decimal ProfitPercentage { get; set; }
+        public decimal AdditionalProfitPercentage { get; set; }
 
         //Cost Variable Propertyleri
         public decimal LaborCostPerHourEuro { get; set; }

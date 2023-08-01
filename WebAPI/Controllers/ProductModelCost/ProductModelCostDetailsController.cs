@@ -21,9 +21,10 @@ namespace WebAPI.Controllers.ProductModelCost
         }
 
         [HttpGet("GetCalculate")]
-        public IActionResult GetCalculate(int modelId, int installationCostLocationId, int accessoryId)
+        public IActionResult GetCalculate([FromQuery]ProductModelCostDetail productModelCostDetail)
         {
-            var result = _productModelCostDetailService.GetCalculate(modelId, installationCostLocationId, accessoryId);
+            Convert.ToBoolean(productModelCostDetail.ExportState);
+            var result = _productModelCostDetailService.GetCalculate(productModelCostDetail);
 
             if (result.Success)
             {

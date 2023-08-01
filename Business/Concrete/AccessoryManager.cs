@@ -15,6 +15,7 @@ using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.ExchangeRate.CurrencyGet;
 
 namespace Business.Concrete
 {
@@ -32,7 +33,8 @@ namespace Business.Concrete
         {
             if (accessory != null)
             {
-                accessory.AccessoryTlPrice = TCMBCalculation.EuroCalculation(accessory.AccessoryEuroPrice);
+                
+                accessory.AccessoryTlPrice = TCMBCalculation.CurrencyCalculation(accessory.AccessoryEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _accessoryDal.Add(accessory);
                 return new SuccessResult(Messages.DataAdded);
             }
@@ -83,7 +85,7 @@ namespace Business.Concrete
         {
             if(accessory != null)
             {
-                accessory.AccessoryTlPrice = TCMBCalculation.EuroCalculation(accessory.AccessoryEuroPrice);
+                accessory.AccessoryTlPrice = TCMBCalculation.CurrencyCalculation(accessory.AccessoryEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _accessoryDal.Update(accessory);
                 return new SuccessResult(Messages.DataUpdate);
             }

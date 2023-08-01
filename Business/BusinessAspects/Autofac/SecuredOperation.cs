@@ -31,7 +31,7 @@ namespace Business.BusinessAspects.Autofac
         protected override void OnBefore(IInvocation invocation)
         {
             try
-           {
+            {
                 var checkNameIdentifier = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 var checkNameIdentifierNull = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value == null;
             }
@@ -40,12 +40,12 @@ namespace Business.BusinessAspects.Autofac
 
                 throw new SecuredOperationException(UserMessages.TokenExpired);
             }
-            
-          //UserId bazen 0 geliyor bu sebepten dolayı bu kontrol oluşturuldu Frontend tarafında interceptor da buna göre bir kod yazdım durum devam ederse  bu kod aktif edilmeli.
-          // Hatanın oluştuğunu şuradan anlayabilirsiniz diyelim ki giriş yaptınız. 40 45 dakika işlem yapmadınız sonra işlem yapmaya çalıştınız ama  işlem yapamıyorsunuz örneğin kayıt işlemi ama sizi hesaptan da atmadı yani token süresi dolmadı
-          // O zaman bu kod aktif edilmeli ilgili sorun devam ediyor demektir.
 
-          var userId = ClaimHelper.GetUserId(_httpContextAccessor.HttpContext);
+            //UserId bazen 0 geliyor bu sebepten dolayı bu kontrol oluşturuldu Frontend tarafında interceptor da buna göre bir kod yazdım durum devam ederse  bu kod aktif edilmeli.
+            // Hatanın oluştuğunu şuradan anlayabilirsiniz diyelim ki giriş yaptınız. 40 45 dakika işlem yapmadınız sonra işlem yapmaya çalıştınız ama  işlem yapamıyorsunuz örneğin kayıt işlemi ama sizi hesaptan da atmadı yani token süresi dolmadı
+            // O zaman bu kod aktif edilmeli ilgili sorun devam ediyor demektir.
+
+            var userId = ClaimHelper.GetUserId(_httpContextAccessor.HttpContext);
             if (_cacheManager.Get<IEnumerable<string>>($"{CacheKeys.UserIdForClaim}={userId}") == null)
             {
                 throw new SecuredOperationException(UserMessages.TokenExpired);

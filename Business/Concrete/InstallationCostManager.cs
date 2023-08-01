@@ -6,6 +6,7 @@ using Business.ValidationRules.InstallationCost;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
+using Core.Utilities.ExchangeRate.CurrencyGet;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -31,7 +32,7 @@ namespace Business.Concrete
         {
             if (installationCost != null)
             {
-                installationCost.InstallationTlPrice = TCMBCalculation.EuroCalculation(installationCost.InstallationEuroPrice);
+                installationCost.InstallationTlPrice = TCMBCalculation.CurrencyCalculation(installationCost.InstallationEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _installationCostDal.Add(installationCost);
                 return new SuccessResult(Messages.DataAdded);
             }
@@ -91,7 +92,7 @@ namespace Business.Concrete
         {
             if (installationCost != null)
             {
-                installationCost.InstallationTlPrice = TCMBCalculation.EuroCalculation(installationCost.InstallationEuroPrice);
+                installationCost.InstallationTlPrice = TCMBCalculation.CurrencyCalculation(installationCost.InstallationEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _installationCostDal.Update(installationCost);
                 return new SuccessResult(Messages.DataUpdate);
             }

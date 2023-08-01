@@ -72,10 +72,23 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Add")]
-        public IActionResult Add(ModelDto modelDto)
+        [HttpPost("AddDto")]
+        public IActionResult AddDto(ModelDto modelDto)
         {
-            var result = _modelService.Add(modelDto);
+            var result = _modelService.AddDto(modelDto);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("UpdateDto")]
+        public IActionResult UpdateDto(ModelDto modelDto)
+        {
+            var result = _modelService.UpdateDto(modelDto);
 
             if (result.Success)
             {
@@ -86,9 +99,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult Update(ModelDto modelDto)
+        public IActionResult Update(Model model)
         {
-            var result = _modelService.Update(modelDto);
+            var result = _modelService.Update(model);
 
             if (result.Success)
             {

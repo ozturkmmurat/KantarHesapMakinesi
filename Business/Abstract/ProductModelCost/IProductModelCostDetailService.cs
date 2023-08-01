@@ -11,6 +11,6 @@ namespace Business.Abstract.ProductModelCost
     {
         
         ProductModelCostDetail CostCalculateDetail(ProductModelCostDetail productModelCostDetail);
-        IDataResult<ProductModelCostDetail> GetCalculate(int modelId, int installationCostLocationId, int accessoryId);
+        IDataResult<ProductModelCostDetail> GetCalculate(ProductModelCostDetail productModelCostDetail);
     }
 }

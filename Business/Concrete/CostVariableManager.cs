@@ -55,7 +55,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<CostVariable>>();
         }
-        [SecuredOperation("admin")]
         public IDataResult<CostVariable> GetById(int id)
         {
             var result = _costVariableDal.Get(x => x.Id == id);

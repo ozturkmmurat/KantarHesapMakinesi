@@ -42,7 +42,6 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.UnDataDeleted);
         }
-        [SecuredOperation("admin")]
         public IDataResult<List<SizeContentDto>> GetAllSizeCtDtoBySizeId(int sizeId)
         {
             var result = _sizeContent.GetAllSizeContentDto(x => x.SizeId == sizeId);
@@ -62,7 +61,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<SizeContent>>(Messages.GetByAllDefault);
         }
-        [SecuredOperation("admin")]
         public IDataResult<SizeContent> GetById(int id)
         {
             var result = _sizeContent.Get(x => x.Id == id);

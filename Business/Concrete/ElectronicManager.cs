@@ -6,6 +6,7 @@ using Business.ValidationRules.Electronic;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
+using Core.Utilities.ExchangeRate.CurrencyGet;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
@@ -30,7 +31,7 @@ namespace Business.Concrete
         {
             if (electronic != null)
             {
-                electronic.ElectronicTlPrice = TCMBCalculation.EuroCalculation(electronic.ElectronicEuroPrice);
+                electronic.ElectronicTlPrice = TCMBCalculation.CurrencyCalculation(electronic.ElectronicEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _electronicDal.Add(electronic);
                 return new SuccessResult(Messages.DataAdded);
             }
@@ -72,7 +73,7 @@ namespace Business.Concrete
         {
             if (electronic != null)
             {
-                electronic.ElectronicTlPrice = TCMBCalculation.EuroCalculation(electronic.ElectronicEuroPrice);
+                electronic.ElectronicTlPrice = TCMBCalculation.CurrencyCalculation(electronic.ElectronicEuroPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR"));
                 _electronicDal.Update(electronic);
                 return new SuccessResult(Messages.DataUpdate);
             }

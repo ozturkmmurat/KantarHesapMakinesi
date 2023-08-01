@@ -26,7 +26,7 @@ namespace Business.Concrete
             _costVariableService = costVariableService;
         }
         [SecuredOperation("admin")]
-        public IResult Add(ModelDto modelDto)
+        public IResult AddDto(ModelDto modelDto)
         {
             if (modelDto != null)
             {
@@ -88,7 +88,6 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<List<ModelDto>>();
         }
-        [SecuredOperation("admin")]
         public IDataResult<Model> GetById(int id)
         {
             var result = _modelDal.Get(x=> x.Id == id);
@@ -139,8 +138,39 @@ namespace Business.Concrete
             return null;
           
         }
+
+        public IResult Update(Model model)
+        {
+            if (model != null)
+            {
+                var getModel = GetById(model.Id).Data;
+                if (getModel != null)
+                {
+                    Model newModel = new Model()
+                    {
+                        Id = model.Id,
+                        SizeId = getModel.SizeId,
+                        ProductId = getModel.ProductId,
+                        CostVariableId = getModel.CostVariableId,
+                        MostSizeKg = getModel.MostSizeKg,
+                        ShateIronWeight = getModel.ShateIronWeight,
+                        IProfilWeight = getModel.IProfilWeight,
+                        FireShateIronWeight = getModel.FireShateIronWeight,
+                        FireIProfileWeight = getModel.FireIProfileWeight,
+                        FireTotalWeight = getModel.FireTotalWeight,
+                        ProductionTime = getModel.ProductionTime,
+                        ProfitPercentage = model.ProfitPercentage,
+                        AdditionalProfitPercentage = model.AdditionalProfitPercentage
+                    };
+                    _modelDal.Update(newModel);
+                    return new SuccessResult(Messages.DataUpdate);
+                }
+            }
+            return new ErrorResult(Messages.UnDataUpdate);
+        }
+
         [SecuredOperation("admin")]
-        public IResult Update(ModelDto modelDto)
+        public IResult UpdateDto(ModelDto modelDto)
         {
             if (modelDto != null)
             {
@@ -158,6 +188,8 @@ namespace Business.Concrete
                     FireIProfileWeight = result.ModelFireIProfileWeight,
                     FireTotalWeight = result.ModelFireTotalWeight,
                     ProductionTime = result.ModelProductionTime,
+                    AdditionalProfitPercentage = result.AdditionalProfitPercentage,
+                    ProfitPercentage = result.ProfitPercentage
                 };
                 _modelDal.Update(model);
                 return new SuccessResult(Messages.DataUpdate);
