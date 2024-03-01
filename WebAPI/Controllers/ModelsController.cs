@@ -25,10 +25,10 @@ namespace WebAPI.Controllers
             var result = _modelService.GetAllModel();
 
             if (result.Success)
-            {
+            { 
                 return Ok(result);
             }
-
+             
             return BadRequest(result);
         }
 
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             var result = _modelService.GetAllByProductId(productId);
 
             if (result.Success)
-            {
+            { 
                 return Ok(result);
             }
 
