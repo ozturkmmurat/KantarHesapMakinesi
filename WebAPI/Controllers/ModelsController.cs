@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ModelsController : ControllerBase
+    public class ModelsController : ControllerBase 
     {
         IModelService _modelService;
         public ModelsController(IModelService modelService)
