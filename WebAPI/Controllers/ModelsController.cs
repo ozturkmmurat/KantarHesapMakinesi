@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
         [HttpPost("AddDto")]
         public IActionResult AddDto(ModelDto modelDto)
         {
-            var result = _modelService.AddDto(modelDto);
+            var result = _modelService.AddDto(modelDto); 
 
             if (result.Success)
             {
