@@ -9,6 +9,9 @@ namespace Entities.Dtos
     {
         //Product propertyleri
         public int ProductId { get; set; }
+        public int ProductProfitId { get; set; }
         public string ProductName { get; set; }
+        public decimal ProfitPercentage { get; set; }
+        public decimal AdditionalProfitPercentage { get; set; }
     }
 }

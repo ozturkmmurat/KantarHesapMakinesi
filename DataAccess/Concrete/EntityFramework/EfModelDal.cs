@@ -12,12 +12,16 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfModelDal : EfEntityRepositoryBase<Model, KantarHesapMakinesiContext>, IModelDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfModelDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
         public List<ModelDto> GetAllModelDto()
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from m in context.Models
-                             join cv in context.CostVariables
+                var result = from m in _context.Models
+                             join cv in _context.CostVariables
                              on m.CostVariableId equals cv.Id
 
                              select new ModelDto
@@ -40,15 +44,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  
                              };
                 return result.ToList();
-            }
         }
 
         public ModelDto GetModelModelDtoById(int id)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from m in context.Models
-                             join cv in context.CostVariables
+                var result = from m in _context.Models
+                             join cv in _context.CostVariables
                              on m.CostVariableId equals cv.Id
                              where m.Id == id
                              select new ModelDto
@@ -70,7 +71,6 @@ namespace DataAccess.Concrete.EntityFramework
                                  CostVariableFireTotalPercentAge = cv.FireTotalPercentAge,
                              };
                 return result.FirstOrDefault();
-            }
         }
     }
 }

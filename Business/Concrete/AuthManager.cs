@@ -75,7 +75,7 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<Core.Entities.Concrete.User>(userToCheck, "Başarılı giriş");
             }
-            return new ErrorDataResult<Core.Entities.Concrete.User>(Messages.LoginCheck);
+            return new ErrorDataResult<Core.Entities.Concrete.User>(message:Messages.LoginCheck);
 
         }
 

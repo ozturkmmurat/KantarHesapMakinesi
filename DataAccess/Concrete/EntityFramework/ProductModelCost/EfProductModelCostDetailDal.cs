@@ -11,5 +11,11 @@ namespace DataAccess.Concrete.EntityFramework.ProductModelCost
 {
     public class EfProductModelCostDetailDal : EfEntityRepositoryBase<ProductModelCostDetail, KantarHesapMakinesiContext>, IProductModelCostDetailDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfProductModelCostDetailDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }

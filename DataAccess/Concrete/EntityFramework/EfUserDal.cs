@@ -13,16 +13,21 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<User, KantarHesapMakinesiContext>, IUserDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfUserDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
+
         public List<UserDto> GetAllUserDto(Expression<Func<UserDto, bool>> filter = null)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from u in context.Users
-                             join uop in context.UserOperationClaims
+                var result = from u in _context.Users
+                             join uop in _context.UserOperationClaims
                              on u.Id equals uop.UserId
                              into userOperationClaimTemp
                              from uopt in userOperationClaimTemp.DefaultIfEmpty()
-                             join op in context.OperationClaims
+                             join op in _context.OperationClaims
                              on uopt.OperationClaimId equals op.Id
                               into operationClaimTemp
                              from opct in operationClaimTemp.DefaultIfEmpty()
@@ -39,21 +44,16 @@ namespace DataAccess.Concrete.EntityFramework
                                  OperationClaimName = opct.Name
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
-            }
         }
 
         public List<OperationClaim> GetClaims(User user)
         {
-            using (var context = new KantarHesapMakinesiContext())
-            {
-                var result = from operationClaim in context.OperationClaims
-                             join userOperationClaim in context.UserOperationClaims
+                var result = from operationClaim in _context.OperationClaims
+                             join userOperationClaim in _context.UserOperationClaims
                                  on operationClaim.Id equals userOperationClaim.OperationClaimId
                              where userOperationClaim.UserId == user.Id
                              select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
                 return result.ToList();
-
-            }
         }
     }
 }

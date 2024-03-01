@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -57,10 +58,10 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Add")]
-        public IActionResult Add(Product product)
+        [HttpPost("TsaAdd")]
+        public IActionResult TsaAdd(CRUDProductDto crudProductDto)
         {
-            var result = _productCostService.Add(product);
+            var result = _productCostService.TsaAdd(crudProductDto);
 
             if (result.Success)
             {
@@ -70,10 +71,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Update")]
-        public IActionResult Update(Product product)
+        [HttpPost("TsaUpdate")]
+        public IActionResult Update(CRUDProductDto crudProductDto)
         {
-            var result = _productCostService.Update(product);
+            var result = _productCostService.TsaUpdate(crudProductDto);
 
             if (result.Success)
             {

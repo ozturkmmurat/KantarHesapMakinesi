@@ -13,6 +13,12 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfProductModelCostDal : EfEntityRepositoryBase<Entities.Concrete.ProductModelCost, KantarHesapMakinesiContext>, IProductModelCostDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfProductModelCostDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
 
         public void CustomAdd(Entities.Concrete.ProductModelCost product)
         {
@@ -35,12 +41,12 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<ProductModelCostDto> GetAllProductModelCostDtoById(Expression<Func<ProductModelCostDto, bool>> filter = null)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from pmc in context.ProductModelCosts
-                             join m in context.Models
+                var result = from pmc in _context.ProductModelCosts
+                             join m in _context.Models
                              on pmc.ModelId equals m.Id
-                             join cv in context.CostVariables
+                             join pf in _context.ProductProfits
+                             on  m.ProductId equals pf.ProductId
+                             join cv in _context.CostVariables
                              on m.CostVariableId equals cv.Id
 
                              select new ProductModelCostDto
@@ -59,25 +65,24 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelId = m.Id,
                                  ModelProductionTime = m.ProductionTime,
 
-                                 ProfitPercentage = m.ProfitPercentage,
-                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
+                                 ProfitPercentage = pf.ProfitPercentage,
+                                 AdditionalProfitPercentage = pf.AdditionalProfitPercentage,
 
                                  ModelCostVariableId = cv.Id,
                                  LaborCostPerHourEuro = cv.LaborCostPerHourEuro
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
-            }
         }
 
         public ProductModelCostDto GetProductModelCostDtoById(Expression<Func<ProductModelCostDto, bool>> filter = null)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from pmc in context.ProductModelCosts
-                             join m in context.Models
+                var result = from pmc in _context.ProductModelCosts
+                             join m in _context.Models
                              on pmc.ModelId equals m.Id
-                             join cv in context.CostVariables
+                             join cv in _context.CostVariables
                              on m.CostVariableId equals cv.Id
+                             join pf in _context.ProductProfits
+                             on m.ProductId equals pf.ProductId
 
                              select new ProductModelCostDto
                              {
@@ -95,25 +100,24 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelId = m.Id,
                                  ModelProductionTime = m.ProductionTime,
 
-                                 ProfitPercentage = m.ProfitPercentage,
-                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
-
                                  ModelCostVariableId = cv.Id,
-                                 LaborCostPerHourEuro = cv.LaborCostPerHourEuro
+                                 LaborCostPerHourEuro = cv.LaborCostPerHourEuro,
+
+                                 ProfitPercentage = pf.ProfitPercentage,
+                                 AdditionalProfitPercentage = pf.AdditionalProfitPercentage
                              };
                 return result.Where(filter).FirstOrDefault();
-            }
         }
 
         public List<ProductModelCostDto> GetAllDto()
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from pmc in context.ProductModelCosts
-                             join m in context.Models
+                var result = from pmc in _context.ProductModelCosts
+                             join m in _context.Models
                              on pmc.ModelId equals m.Id
-                             join cv in context.CostVariables
+                             join cv in _context.CostVariables
                              on m.CostVariableId equals cv.Id
+                             join pf in _context.ProductProfits
+                             on m.ProductId equals pf.ProductId
 
                              select new ProductModelCostDto
                              {
@@ -131,14 +135,13 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelId = m.Id,
                                  ModelProductionTime = m.ProductionTime,
 
-                                 ProfitPercentage = m.ProfitPercentage,
-                                 AdditionalProfitPercentage = m.AdditionalProfitPercentage,
-
                                  ModelCostVariableId = cv.Id,
                                  LaborCostPerHourEuro = cv.LaborCostPerHourEuro,
+
+                                 ProfitPercentage = pf.ProfitPercentage,
+                                 AdditionalProfitPercentage = pf.AdditionalProfitPercentage
                              };
                 return result.ToList();
-            }
         }
     }
 }

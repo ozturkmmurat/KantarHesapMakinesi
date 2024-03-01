@@ -18,6 +18,7 @@ using DataAccess.Abstract.SP;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.EntityFramework.ProductModelCost;
 using DataAccess.Concrete.EntityFramework.SP;
+using DataAccess.Context;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,56 +29,70 @@ namespace Business.DependecyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<EfAccessoryDal>().As<IAccessoryDal>().SingleInstance();
-            builder.RegisterType<AccessoryManager>().As<IAccessoryService>().SingleInstance();
+            builder.RegisterType<EfAccessoryDal>().As<IAccessoryDal>().InstancePerLifetimeScope();
+            builder.RegisterType<AccessoryManager>().As<IAccessoryService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfElectronicDal>().As<IElectronicDal>().SingleInstance();
-            builder.RegisterType<ElectronicManager>().As<IElectronicService>().SingleInstance();
+            builder.RegisterType<EfElectronicDal>().As<IElectronicDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ElectronicManager>().As<IElectronicService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfModelDal>().As<IModelDal>().SingleInstance();
-            builder.RegisterType<ModelManager>().As<IModelService>().SingleInstance();
+            builder.RegisterType<EfModelDal>().As<IModelDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ModelManager>().As<IModelService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
-            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
+            builder.RegisterType<EfProductDal>().As<IProductDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductManager>().As<IProductService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfProductModelCostDal>().As<IProductModelCostDal>().SingleInstance();
-            builder.RegisterType<ProductModelCostManager>().As<IProductModelCostService>().SingleInstance();
+            builder.RegisterType<EfProductProfitDal>().As<IProductProfitDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductProfitManager>().As<IProductProfitService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfProductModelCostDetailDal>().As<IProductModelCostDetailDal>().SingleInstance();
-            builder.RegisterType<ProductModelCostDetailManager>().As<IProductModelCostDetailService>().SingleInstance();
+            builder.RegisterType<EfProductModelCostDal>().As<IProductModelCostDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductModelCostManager>().As<IProductModelCostService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfCostVariableDal>().As<ICostVariableDal>().SingleInstance();
-            builder.RegisterType<CostVariableManager>().As<ICostVariableService>().SingleInstance();
+            builder.RegisterType<EfProductModelCostDetailDal>().As<IProductModelCostDetailDal>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductModelCostDetailManager>().As<IProductModelCostDetailService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfLocationDal>().As<ILocationDal>().SingleInstance();
-            builder.RegisterType<LocationManager>().As<ILocationService>().SingleInstance();
+            builder.RegisterType<ProductModelCostCalculateManager>().As<IProductModelCostCalculateService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EfIInstallationCostDal>().As<IInstallationCostDal>().SingleInstance();
-            builder.RegisterType<InstallationCostManager>().As<IInstallationCostService>().SingleInstance();
+            builder.RegisterType<EfCostVariableDal>().As<ICostVariableDal>().InstancePerLifetimeScope();
+            builder.RegisterType<CostVariableManager>().As<ICostVariableService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
-            builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+            builder.RegisterType<EfLocationDal>().As<ILocationDal>().InstancePerLifetimeScope();
+            builder.RegisterType<LocationManager>().As<ILocationService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
-            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
+            builder.RegisterType<EfIInstallationCostDal>().As<IInstallationCostDal>().InstancePerLifetimeScope();
+            builder.RegisterType<InstallationCostManager>().As<IInstallationCostService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
-            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<SizeManager>().As<ISizeService>().SingleInstance();
-            builder.RegisterType<EfSizeDal>().As<ISizeDal>().SingleInstance();
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<SizeContentManager>().As<ISizeContentService>().SingleInstance();
-            builder.RegisterType<EfSizeContent>().As<ISizeContentDal>().SingleInstance();
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+            builder.RegisterType<SizeManager>().As<ISizeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfSizeDal>().As<ISizeDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<DailyCalculationManager>().As<IDailyCalculationService>().SingleInstance();
-            builder.RegisterType<EfDailyCalculationDal>().As<IDailyCalculationDal>().SingleInstance();
+            builder.RegisterType<SizeContentManager>().As<ISizeContentService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfSizeContentDal>().As<ISizeContentDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<MailManager>().As<IMailService>().SingleInstance();
-            builder.RegisterType<MailHelper>().As<IMailHelper>().SingleInstance();
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerLifetimeScope();
+
+            builder.RegisterType<DailyCalculationManager>().As<IDailyCalculationService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfDailyCalculationDal>().As<IDailyCalculationDal>().InstancePerLifetimeScope();
+
+
+            builder.RegisterType<PasswordResetManager>().As<IPasswordResetService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfPasswordResetDal>().As<IPasswordResetDal>().InstancePerLifetimeScope();
+
+            builder.RegisterType<MailManager>().As<IMailService>().InstancePerLifetimeScope();
+            builder.RegisterType<MailHelper>().As<IMailHelper>().InstancePerLifetimeScope();
+
+
+            builder.RegisterType<KantarHesapMakinesiContext>().InstancePerLifetimeScope();
+
+
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
@@ -85,7 +100,7 @@ namespace Business.DependecyResolvers.Autofac
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions()
                 {
                     Selector = new AspectInterceptorSelector()
-                }).SingleInstance();
+                }).InstancePerLifetimeScope();
 
         }
     }

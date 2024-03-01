@@ -10,14 +10,19 @@ using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Entities.Concrete;
 using Core.Entities.Dtos;
+using Core.Utilities.IoC;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using Core.Utilities.Security.Hashing;
+using Core.Utilities.User;
 using DataAccess.Abstract;
 using Entities.Dtos.User;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Business.Concrete
 {
@@ -26,10 +31,13 @@ namespace Business.Concrete
     {
         IUserDal _userDal;
         IUserOperationClaimService _userOperationClaimService;
+        private IHttpContextAccessor _httpContextAccessor;
         public UserManager(IUserDal userDal, IUserOperationClaimService userOperationClaimService)
         {
             _userDal = userDal;
             _userOperationClaimService = userOperationClaimService;
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
         }
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(Core.Entities.Concrete.User user)
@@ -67,10 +75,11 @@ namespace Business.Concrete
         {
             byte[] passwordHash, passwordSalt;
 
-
-            if (GetByMail(userForUpdateDto.Email) != null && GetById(userForUpdateDto.UserId).Data.Email != userForUpdateDto.Email)
+            var getByMail = GetByMail(userForUpdateDto.Email);
+            var getByIdUser = GetById(userForUpdateDto.UserId).Data;
+            if (getByMail != null &&  getByIdUser.Email != userForUpdateDto.Email)
             {
-                return new ErrorResult("Böyle bir e-mail mevcut başka bir mail adresi giriniz");
+                return new ErrorResult(Messages.CurrentMail);
             }
 
 
@@ -86,35 +95,22 @@ namespace Business.Concrete
                     return new ErrorResult("Eski şifreniz hatalı");
                 }
                 HashingHelper.CreatePasswordHash(userForUpdateDto.NewPassword, out passwordHash, out passwordSalt);
-                var user = new Core.Entities.Concrete.User
-                {
-                    Id = userForUpdateDto.UserId,
-                    Email = userForUpdateDto.Email,
-                    FirstName = userForUpdateDto.FirstName,
-                    LastName = userForUpdateDto.LastName,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Status = true
-                };
-                _userDal.Update(user);
+                getByIdUser.Email = userForUpdateDto.Email;
+                getByIdUser.FirstName = userForUpdateDto.FirstName;
+                getByIdUser.LastName = userForUpdateDto.LastName;
+                getByIdUser.PasswordHash = passwordHash;
+                getByIdUser.PasswordSalt = passwordSalt;
+                getByIdUser.Status = true;
+                _userDal.Update(getByIdUser);
             }
             else
             {
+                getByIdUser.Email = userForUpdateDto.Email;
+                getByIdUser.FirstName = userForUpdateDto.FirstName;
+                getByIdUser.LastName = userForUpdateDto.LastName;
+                getByIdUser.Status = userForUpdateDto.Status;
 
-                var result = GetById(userForUpdateDto.UserId);
-                var user = new Core.Entities.Concrete.User
-                {
-                    Id = userForUpdateDto.UserId,
-                    Email = userForUpdateDto.Email,
-                    FirstName = userForUpdateDto.FirstName,
-                    LastName = userForUpdateDto.LastName,
-                    PasswordHash = result.Data.PasswordHash,
-                    PasswordSalt = result.Data.PasswordSalt,
-                    RefreshToken = result.Data.RefreshToken,
-                    RefreshTokenEndDate = result.Data.RefreshTokenEndDate,
-                    Status = userForUpdateDto.Status
-                };
-                _userDal.Update(user);
+                _userDal.Update(getByIdUser);
             }
 
 
@@ -204,8 +200,7 @@ namespace Business.Concrete
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
                     Email = userDto.Email,
-                    Status = userDto.Status,
-                    
+                    Status = userDto.Status
                 };
                 Update(user);
 

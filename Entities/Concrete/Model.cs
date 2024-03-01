@@ -18,7 +18,5 @@ namespace Entities.Concrete
         public decimal FireIProfileWeight { get; set; }
         public decimal FireTotalWeight { get; set; }
         public int ProductionTime { get; set; }
-        public decimal ProfitPercentage { get; set; }
-        public decimal AdditionalProfitPercentage { get; set; }
     }
 }

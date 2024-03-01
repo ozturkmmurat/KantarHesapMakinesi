@@ -22,7 +22,6 @@ namespace Entities.Concrete
         public decimal InstallationPrice { get; set; }
         public decimal SalesPrice { get; set; }
         public decimal ProfitPrice { get; set; }
-        public decimal AdditionalProfitPercentage { get; set; }
         public decimal OfferPrice { get; set; }
         public decimal FinalDiscountPrice { get; set; }
         public bool ExportState { get; set; }

@@ -12,6 +12,11 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCostVariableDal : EfEntityRepositoryBase<CostVariable, KantarHesapMakinesiContext>, ICostVariableDal
     {
-       
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfCostVariableDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }

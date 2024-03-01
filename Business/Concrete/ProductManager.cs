@@ -2,6 +2,7 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constans;
 using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac.Transaction;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
@@ -18,9 +19,11 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        public ProductManager(IProductDal productDal)
+        IProductProfitService _productProfitService;
+        public ProductManager(IProductDal productDal, IProductProfitService productProfitService)
         {
             _productDal = productDal;
+            _productProfitService=productProfitService;
         }
         [SecuredOperation("admin")]
         public IResult Add(Product product)
@@ -71,6 +74,58 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<Product>();
         }
+        [SecuredOperation("admin")]
+        public IResult TsaAdd(CRUDProductDto crudProductDto)
+        {
+            if (crudProductDto != null)
+            {
+                Product product = new Product();
+                product.ProductName = crudProductDto.ProductName;
+                var productAddResult = Add(product);
+
+                if(productAddResult.Success)
+                {
+                    ProductProfit productProfit = new ProductProfit();
+                    productProfit.ProductId = product.Id;
+                    productProfit.ProfitPercentage = crudProductDto.ProfitPercentage;
+                    productProfit.AdditionalProfitPercentage = crudProductDto.AdditionalProfitPercentage;
+                    var productProfitResult = _productProfitService.Add(productProfit);
+
+                    if (productProfitResult.Success)
+                    {
+                        return new SuccessResult();
+                    }
+                }
+            }
+            return new ErrorResult();
+        }
+
+        [SecuredOperation("admin")]
+        [TransactionScopeAspect]
+        public IResult TsaUpdate(CRUDProductDto crudProductDto)
+        {
+            if (crudProductDto != null)
+            {
+                Product product = new Product();
+                product.Id = crudProductDto.ProductId;
+                product.ProductName = crudProductDto.ProductName;
+                var productUpdateResult = Update(product);
+
+                ProductProfit productProfit = new ProductProfit();
+                productProfit.Id = crudProductDto.ProductProfitId;
+                productProfit.ProductId = product.Id;
+                productProfit.ProfitPercentage = crudProductDto.ProfitPercentage;
+                productProfit.AdditionalProfitPercentage = crudProductDto.AdditionalProfitPercentage;
+                var productProfitResult = _productProfitService.Update(productProfit);
+
+                if (productProfitResult.Success && productUpdateResult.Success)
+                {
+                    return new SuccessResult();
+                }
+            }
+            return new ErrorResult();
+        }
+
         [SecuredOperation("admin")]
         public IResult Update(Product product)
         {

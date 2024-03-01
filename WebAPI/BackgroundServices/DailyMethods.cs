@@ -25,10 +25,8 @@ namespace WebAPI.BackgroundServices
         private IProductModelCostService _productModelCostService;
         private IDailyCalculationService _dailyCalculationService;
         private IMailService _mailService;
-        private readonly ILogger<DailyMethods> _logger;
         private Timer _timer;
         public DailyMethods(
-            ILogger<DailyMethods> logger,
             IProductModelCostService productModelCostService,
             IDailyCalculationService dailyCalculationService,
             IMailService mailService)
@@ -36,7 +34,6 @@ namespace WebAPI.BackgroundServices
             _productModelCostService = productModelCostService;
             _dailyCalculationService = dailyCalculationService;
             _mailService = mailService;
-            _logger = logger;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -50,7 +47,7 @@ namespace WebAPI.BackgroundServices
             TimeSpan calculateTime = CalculateTime();
             string message2 = " Kalan süre : " + calculateTime.Hours + " Saat "  + calculateTime.Minutes +  " Dakika ";
             mailDto.MailBody = message1 + message2;
-            _mailService.SendMail(mailDto);
+            _mailService.ConstantSendMail(mailDto);
             _timer = new Timer(DailyMethod, null, calculateTime, TimeSpan.FromDays(1));
             //_timer = new Timer(DailyMethod, null, TimeSpan.Zero, TimeSpan.FromDays(1));
             return Task.CompletedTask;
@@ -86,14 +83,14 @@ namespace WebAPI.BackgroundServices
                 _dailyCalculationService.CalculateCostSP();
                 _productModelCostService.UpdateRange(productModelCostDtos);
                 mailDto.MailBody = "Günlük güncelleme başarılı";
-                _mailService.SendMail(mailDto);
+                _mailService.ConstantSendMail(mailDto);
 
             }
             catch (Exception error)
             {
                 mailDto.MailTitle = "Günlük güncelleme başarısız.";
                 mailDto.MailBody = "Günülük güncelleme sırasında hata oluştu hata mesajı alttaki şekildedir </br>" + error;
-                _mailService.SendMail(mailDto);
+                _mailService.ConstantSendMail(mailDto);
                 throw;
             }
         }

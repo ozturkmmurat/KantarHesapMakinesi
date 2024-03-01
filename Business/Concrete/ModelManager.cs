@@ -19,11 +19,13 @@ namespace Business.Concrete
     public class ModelManager : IModelService
     {
         IModelDal _modelDal;
+        IProductModelCostService _productModelCostService;
         ICostVariableService _costVariableService;
-        public ModelManager(IModelDal modelDal, ICostVariableService costVariableService)
+        public ModelManager(IModelDal modelDal, ICostVariableService costVariableService, IProductModelCostService productModelCostService)
         {
             _modelDal = modelDal;
             _costVariableService = costVariableService;
+            _productModelCostService = productModelCostService;
         }
         [SecuredOperation("admin")]
         public IResult AddDto(ModelDto modelDto)
@@ -45,6 +47,10 @@ namespace Business.Concrete
                     ProductionTime = result.ModelProductionTime,
                 };
                 _modelDal.Add(model);
+                ProductModelCostDto productModelCostDto = new ProductModelCostDto();
+                productModelCostDto.ModelId = model.Id;
+                _productModelCostService.AddProductModelCost(productModelCostDto);
+
                 return new SuccessResult(Messages.DataAdded);
             }
             return new ErrorResult(Messages.UnDataAdded);
@@ -158,9 +164,7 @@ namespace Business.Concrete
                         FireShateIronWeight = getModel.FireShateIronWeight,
                         FireIProfileWeight = getModel.FireIProfileWeight,
                         FireTotalWeight = getModel.FireTotalWeight,
-                        ProductionTime = getModel.ProductionTime,
-                        ProfitPercentage = model.ProfitPercentage,
-                        AdditionalProfitPercentage = model.AdditionalProfitPercentage
+                        ProductionTime = getModel.ProductionTime
                     };
                     _modelDal.Update(newModel);
                     return new SuccessResult(Messages.DataUpdate);
@@ -187,9 +191,7 @@ namespace Business.Concrete
                     FireShateIronWeight = result.ModelFireShateIronWeight,
                     FireIProfileWeight = result.ModelFireIProfileWeight,
                     FireTotalWeight = result.ModelFireTotalWeight,
-                    ProductionTime = result.ModelProductionTime,
-                    AdditionalProfitPercentage = result.AdditionalProfitPercentage,
-                    ProfitPercentage = result.ProfitPercentage
+                    ProductionTime = result.ModelProductionTime
                 };
                 _modelDal.Update(model);
                 return new SuccessResult(Messages.DataUpdate);

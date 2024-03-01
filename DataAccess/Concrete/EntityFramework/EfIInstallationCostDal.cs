@@ -13,12 +13,16 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfIInstallationCostDal : EfEntityRepositoryBase<InstallationCost, KantarHesapMakinesiContext>, IInstallationCostDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfIInstallationCostDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
         public List<InstallationCostDto> GetAllInstallationCostDto(Expression<Func<InstallationCostDto, bool>> filter = null)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from l in context.Locations
-                             join ic in context.InstallationCosts
+                var result = from l in _context.Locations
+                             join ic in _context.InstallationCosts
                              on l.Id equals ic.LocationId
 
                              select new InstallationCostDto
@@ -30,15 +34,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  CityName = l.CityName
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
-            }
         }
 
         public InstallationCostDto GetByIdProductModelCostDetailDto(Expression<Func<InstallationCostDto, bool>> filter)
         {
-            using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())
-            {
-                var result = from l in context.Locations
-                             join ic in context.InstallationCosts
+                var result = from l in _context.Locations
+                             join ic in _context.InstallationCosts
                              on l.Id equals ic.LocationId
 
                              select new InstallationCostDto
@@ -50,7 +51,6 @@ namespace DataAccess.Concrete.EntityFramework
                                  CityName = l.CityName
                              };
                 return result.Where(filter).FirstOrDefault();
-            }
         }
     }
 }

@@ -14,5 +14,11 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserOperationClaimDal : EfEntityRepositoryBase<UserOperationClaim, KantarHesapMakinesiContext>, IUserOperationClaimDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfUserOperationClaimDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }

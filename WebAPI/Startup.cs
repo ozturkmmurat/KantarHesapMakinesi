@@ -37,17 +37,11 @@ namespace WebAPI
         }
 
         public IConfiguration Configuration { get; }
-        //burada nerede çalıştırmışım background servicei
-        // burada çalıştırmışsın demedim ki niye iki tane background service var dedim  iki tane ? anlamadım o zaten projeyi oluşturunca geliyor
-        // configureservices orayı diyorsan 
-        // çiçek gibi oldu :D :D bana küçücük oldu :D 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
-            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR"); // Projeyi canlıya atınca Fluent Validation da WithMessage alanı icerisindeki Mesaj bazı bolumlerde ingilizce olarak geliyor
-                                                                                        // Bunu önlemek için default dilimizin Turkce olduğunu belirtiyoruz.
-            services.AddHostedService<DailyMethods>(); // startupın içerisinde var ya configure services burada ne işi var ? patlatır programını ikisi olması startup da nerede
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR"); 
+            services.AddHostedService<DailyMethods>(); 
 
             services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -77,21 +71,18 @@ namespace WebAPI
              new CoreModule()
             }); ;
         }
-        // nerde koydun background servisi ? göstereyim
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.ConfigureCustomExceptionMiddleware(); // MiddleWare yaşam döngüsünde hata yakalama middleware de çalıştır diyoruz.
-           
+            app.ConfigureCustomExceptionMiddleware();
 
-            app.UseCors(builder => builder.WithOrigins("http://kantarhesap.esit.com.tr").AllowAnyHeader().AllowAnyMethod()); //Apiye hangi urle sahip kisilerin erisebileceigini belirtiyoruz
-            //NOT: Eger localhost silinmez ise kendi localin de localhost:4200 olan biri projeye erisebilir bu sebepten dolayi projeyi canliya atinca localhost silinmeli güvenlik için.
-            //NOT: AllowyAnyMethod silinirse projeyi canliya alinca 500 veya Cors hatasi alinmasina sebep olur.
+            app.UseStaticFiles();
 
+
+            app.UseCors(builder => builder.WithOrigins("http://kantarhesap.esit.com.tr").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

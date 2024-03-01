@@ -9,6 +9,10 @@ namespace Business.Abstract
 {
     public interface IMailService
     {
-        IResult SendMail(MailDto mailDto);
+        IResult ConstantSendMail(MailDto mailDto);
+        IResult VariableSendMail(MailDto mailDto);
+        IResult Register(string firstName, string lastName, string email);
+        IResult ForgotPasswordCode(string email, string code);
+        IResult SendPaswordResetLink(string email, string link);
     }
 }

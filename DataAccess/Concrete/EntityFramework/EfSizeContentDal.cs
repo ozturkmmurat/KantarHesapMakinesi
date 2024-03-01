@@ -11,8 +11,14 @@ using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfSizeContent : EfEntityRepositoryBase<SizeContent, KantarHesapMakinesiContext>, ISizeContentDal
+    public class EfSizeContentDal : EfEntityRepositoryBase<SizeContent, KantarHesapMakinesiContext>, ISizeContentDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfSizeContentDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
         public List<SizeContentDto> GetAllSizeContentDto(Expression<Func<SizeContentDto, bool>> filter = null)
         {
             using (KantarHesapMakinesiContext context = new KantarHesapMakinesiContext())

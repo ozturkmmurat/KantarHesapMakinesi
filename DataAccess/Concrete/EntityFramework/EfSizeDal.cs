@@ -13,5 +13,11 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfSizeDal : EfEntityRepositoryBase<Size, KantarHesapMakinesiContext>, ISizeDal
     {
+        private readonly KantarHesapMakinesiContext _context;
+
+        public EfSizeDal(KantarHesapMakinesiContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }

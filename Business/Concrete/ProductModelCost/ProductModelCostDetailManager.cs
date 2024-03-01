@@ -21,69 +21,72 @@ namespace Business.Concrete.ProductModelCost
     [LogAspect(typeof(FileLogger))]
     public class ProductModelCostDetailManager : IProductModelCostDetailService
     {
-        IProductModelCostDetailDal _productModelCostDetailDal;
         IProductModelCostService _productModelCostService;
         IInstallationCostService _installationCostService;
         IAccessoryService _accessoryService;
         IModelService _modelService;
+        IProductProfitService _productProfitService;
         public ProductModelCostDetailManager(
-            IProductModelCostDetailDal productModelCostDetailDal,
             IProductModelCostService productModelCostService,
             IInstallationCostService installationCostService,
             IAccessoryService accessoryService,
-            IModelService modelService)
+            IModelService modelService,
+            IProductProfitService productProfitService)
         {
-            _productModelCostDetailDal = productModelCostDetailDal;
             _productModelCostService = productModelCostService;
             _installationCostService = installationCostService;
             _accessoryService = accessoryService;
             _modelService = modelService;
+            _productProfitService = productProfitService;
         }
 
         public Entities.Concrete.ProductModelCostDetail CostCalculateDetail(ProductModelCostDetail productModelCostDetail)
         {
             var getModel = _modelService.GetById(productModelCostDetail.ModelId);
+            var getProductProfit = _productProfitService.GetByProductId(getModel.Data.ProductId);
             var productModelCost = _productModelCostService.GetByModelIdCurrency(productModelCostDetail.ModelId, productModelCostDetail.CurrencyName);
             var accessoryResult = _accessoryService.GetById(productModelCostDetail.AccessoryId);
             var installationCostResult = _installationCostService.GetInstallationCostByLocationId(productModelCostDetail.InstallationCostLocationId);
 
+            if (accessoryResult.Success) //Hesaplama işlemi için bir aksesuar seçilmiş mi ?
+            {
+                productModelCostDetail.AccessoryPrice = accessoryResult.Data.AccessoryEuroPrice;
+            }
+            else
+            {
+                productModelCostDetail.AccessoryPrice = 0;
+            }
+
             if (productModelCostDetail.ExportState)
             {
-                if (accessoryResult.Success) //Hesaplama işlemi için bir aksesuar seçilmiş mi ?
-                {
-                    productModelCostDetail.AccessoryPrice = accessoryResult.Data.AccessoryEuroPrice;
-                }
-                else
-                {
-                    productModelCostDetail.AccessoryPrice = 0;
-                }
+               
                 if (installationCostResult.Success) //Kurulum yeri seçilmiş mi ?
                 {
-
+                    var getCurrency = CurrencyGet.ForexBuyingCurrencyGet("EUR");
+                    productModelCostDetail.InstallationPrice += TCMBCalculation.DivideCurrencyCalculation(installationCostResult.Data.InstallationTlPrice, getCurrency);
                     productModelCostDetail.InstallationIncluded += TCMBCalculation.DivideCurrencyCalculation(productModelCost.Data.OverheadIncluded +productModelCost.Data.ElectronicAmount
-                     +  installationCostResult.Data.InstallationTlPrice, CurrencyGet.ForexBuyingCurrencyGet("EUR")) + productModelCostDetail.AccessoryPrice;
+                     +  installationCostResult.Data.InstallationTlPrice, getCurrency) + productModelCostDetail.AccessoryPrice;
                     productModelCostDetail.SalesPrice += productModelCostDetail.InstallationIncluded;
                 }
-                var salePriceKeep = productModelCostDetail.SalesPrice;
-                productModelCostDetail.ProfitPrice = productModelCostDetail.SalesPrice * getModel.Data.ProfitPercentage / 100;
+                productModelCostDetail.ProfitPrice = productModelCostDetail.SalesPrice * getProductProfit.Data.ProfitPercentage / 100;
                 productModelCostDetail.FinalDiscountPrice += (productModelCostDetail.ProfitPrice + productModelCostDetail.SalesPrice);
-                productModelCostDetail.OfferPrice += productModelCostDetail.FinalDiscountPrice + (productModelCostDetail.FinalDiscountPrice * getModel.Data.AdditionalProfitPercentage / 100);
+                productModelCostDetail.OfferPrice += productModelCostDetail.FinalDiscountPrice + (productModelCostDetail.FinalDiscountPrice *  getProductProfit.Data.AdditionalProfitPercentage / 100);
             }
             else if(productModelCostDetail.CurrencyName != "TRY" && !productModelCostDetail.ExportState) 
             {
                 productModelCostDetail.InstallationIncluded += productModelCost.Data.OverheadIncluded + productModelCost.Data.ElectronicAmount
                     + productModelCostDetail.AccessoryPrice + 0;
                 productModelCostDetail.SalesPrice += productModelCostDetail.InstallationIncluded;
-                var salePriceKeep = productModelCostDetail.SalesPrice;
-                productModelCostDetail.ProfitPrice = productModelCostDetail.SalesPrice * getModel.Data.ProfitPercentage / 100;
+                productModelCostDetail.ProfitPrice = productModelCostDetail.SalesPrice *  getProductProfit.Data.ProfitPercentage / 100;
                 productModelCostDetail.FinalDiscountPrice += (productModelCostDetail.ProfitPrice + productModelCostDetail.SalesPrice);
-                productModelCostDetail.OfferPrice += productModelCostDetail.FinalDiscountPrice + (productModelCostDetail.FinalDiscountPrice * getModel.Data.AdditionalProfitPercentage / 100);
+                productModelCostDetail.OfferPrice += productModelCostDetail.FinalDiscountPrice + (productModelCostDetail.FinalDiscountPrice * getProductProfit.Data.AdditionalProfitPercentage / 100);
             }
           
 
             return productModelCostDetail;
         }
 
+        [SecuredOperation("user,admin,official")]
         public IDataResult<ProductModelCostDetail> GetCalculate(ProductModelCostDetail productModelCostDetail)
         {
             var result = CostCalculateDetail(productModelCostDetail);
